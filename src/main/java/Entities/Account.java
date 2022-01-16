@@ -3,13 +3,15 @@ package Entities;
 public class Account {
     private String accId;
     private Status status;
+    private String username;
     private String password;
     private Integer amount;
     private String branchName;
     private String userId;
-    public Account(String accId, String status, String password, Integer amount, String branchName,String userId) {
+    public Account(String accId, String status, String username, String password, Integer amount, String branchName,String userId) {
         this.accId = accId;
         this.status = Status.OPEN;
+        this.username = username;
         this.password = password;
         this.amount = amount;
         this.branchName=branchName;
@@ -40,6 +42,12 @@ public class Account {
     }
     public void setStatus(Status status) {
         this.status = status;
+    }
+    public String getUsername() {
+        return username;
+    }
+    public void setUsername(String username) {
+        this.username = username;
     }
     public String getPassword() {
         return password;
