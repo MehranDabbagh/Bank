@@ -2,5 +2,6 @@ package Entities;
 
 public enum TransactionType {
     WITHDREW,
-    DEPOSIT
+    DEPOSIT,
+    TRANSFER
 }
