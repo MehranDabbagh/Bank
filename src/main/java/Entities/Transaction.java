@@ -3,9 +3,11 @@ package Entities;
 public class Transaction {
     private String transactionId;
     private TransactionType transactionType;
-    public Transaction(String transactionId, TransactionType transactionType) {
+    public Integer amount;
+    public Transaction(String transactionId, TransactionType transactionType, Integer amount) {
         this.transactionId = transactionId;
         this.transactionType = transactionType;
+        this.amount=amount;
     }
     public Transaction() {
     }
