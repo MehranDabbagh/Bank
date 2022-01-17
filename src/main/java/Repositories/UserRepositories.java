@@ -11,7 +11,7 @@ import java.sql.SQLException;
 public class UserRepositories {
     Connection connection= PostgresConnection.getInstance().getConnection();
     public UserRepositories(){
-        String sql="create table if not exists users(national_code varchar(50) unique ,userId serialprimary key )";
+        String sql="create table if not exists users(national_code varchar(50) unique not null ,password  varchar(50) not null  )";
         try {
             PreparedStatement preparedStatement=connection.prepareStatement(sql);
         } catch (SQLException e) {
