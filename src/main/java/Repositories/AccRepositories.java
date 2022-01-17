@@ -23,5 +23,8 @@ public class AccRepositories {
             e.printStackTrace();
         }
     }
+    public void createAcc(String username,String password,String branchName,String userId){
+
+    }
 
 }

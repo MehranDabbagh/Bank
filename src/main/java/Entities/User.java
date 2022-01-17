@@ -1,11 +1,16 @@
 package Entities;
 
+import java.util.ArrayList;
+import java.util.Random;
+
 public class User {
     private String nationalCode;
-    private String userID;
-    public User(String nationalCode,String userID) {
+    private String password;
+    private ArrayList<Account> accounts=new ArrayList<Account>();
+    public User(String nationalCode,String password,Account account) {
         this.nationalCode = nationalCode;
-       this.userID=userID;
+        this.password=password;
+        accounts.add(account);
     }
     public User() {
     }
@@ -15,11 +20,20 @@ public class User {
     public void setNationalCode(String nationalCode) {
         this.nationalCode = nationalCode;
     }
-    public String getUserID() {
-        return userID;
-    }
-    public void setUserID(String userID) {
-        this.userID = userID;
+
+    public String getPassword() {
+        return password;
     }
 
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public ArrayList<Account> getAccounts() {
+        return accounts;
+    }
+
+    public void setAccounts(ArrayList<Account> accounts) {
+        this.accounts = accounts;
+    }
 }
