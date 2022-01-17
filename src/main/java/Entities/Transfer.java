@@ -2,14 +2,14 @@ package Entities;
 
 public class Transfer {
     private String transferId;
-    private String senderId;
-    private String ReceiverId;
+    private CreditCard senderCard;
+    private CreditCard ReceiverCard;
     private Integer amount;
 
-    public Transfer(String transferId, String senderId, String receiverId, Integer amount) {
-        this.transferId = transferId;
-        this.senderId = senderId;
-        ReceiverId = receiverId;
+    public Transfer( CreditCard senderCard, CreditCard ReceiverCard, Integer amount) {
+        this.transferId =String.valueOf(Math.floor(Math.random()*(1000)+Math.pow(10,15))) ;
+        this.senderCard = senderCard;
+        this.ReceiverCard = ReceiverCard;
         this.amount = amount;
     }
 
@@ -21,20 +21,20 @@ public class Transfer {
         this.transferId = transferId;
     }
 
-    public String getSenderId() {
-        return senderId;
+    public CreditCard getSenderCard() {
+        return senderCard;
     }
 
-    public void setSenderId(String senderId) {
-        this.senderId = senderId;
+    public void setSenderCard(CreditCard senderCard) {
+        this.senderCard = senderCard;
     }
 
-    public String getReceiverId() {
-        return ReceiverId;
+    public CreditCard getReceiverCard() {
+        return ReceiverCard;
     }
 
-    public void setReceiverId(String receiverId) {
-        ReceiverId = receiverId;
+    public void setReceiverCard(CreditCard receiverCard) {
+        ReceiverCard = receiverCard;
     }
 
     public Integer getAmount() {
