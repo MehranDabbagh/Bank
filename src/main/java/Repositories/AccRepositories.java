@@ -86,7 +86,7 @@ return null;
             PreparedStatement preparedStatement= connection.prepareStatement(sql);
 
             ResultSet resultSet= preparedStatement.executeQuery();
-            if(resultSet.next()){
+            while(resultSet.next()){
                 Account account=new Account(resultSet.getString("password"),resultSet.getString("branchName"));
                 User user=new User(resultSet.getString("national_code"),resultSet.getString("(users).password"),account);
                 account=new Account(resultSet.getString("password"),resultSet.getString("accId"),resultSet.getString("branchName"),resultSet.getInt("amount"), Status.valueOf(resultSet.getString("status")),user);

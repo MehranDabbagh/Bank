@@ -15,7 +15,8 @@ public class CreditCard {
     private ArrayList<Transaction> transactions=new ArrayList<Transaction>();
     private ArrayList<Transfer> transfers=new ArrayList<Transfer>();
     private Integer foul;
-    public CreditCard(String password) {
+    private Account account;
+    public CreditCard(String password, Account account) {
         this.cardId = String.valueOf(Math.floor(Math.random()*(1000)+Math.pow(10,15))) ;
         this.cvv2 = String.valueOf(Math.floor(Math.random()*(999)+Math.pow(10,3))) ;
         this.password = password;
@@ -24,15 +25,24 @@ public class CreditCard {
         this.expireDate =now.getTime();
         this.status=Status.OPEN;
         this.foul=0;
+        this.account=account;
     }
-    public CreditCard(String cardId,String cvv2,String password,Date expireDate,Status status,ArrayList<Transaction> transactions,ArrayList <Transfer> transfers){
+    public CreditCard(String cardId,String cvv2,String password,Date expireDate,Status status){
         this.cardId=cardId;
         this.cvv2=cvv2;
         this.password=password;
         this.expireDate=expireDate;
         this.status=status;
-      if(transactions!=null){this.transactions=transactions;}
-       if(transfers!=null){ this.transfers=transfers;}
+
+    }
+    public CreditCard(String cardId,String cvv2,String password,Date expireDate,Status status,ArrayList<Transaction> transactions,ArrayList<Transfer> transfers){
+        this.cardId=cardId;
+        this.cvv2=cvv2;
+        this.password=password;
+        this.expireDate=expireDate;
+        this.status=status;
+        if(transactions!=null){this.transactions=transactions;}
+        if(transfers!=null){ this.transfers=transfers;}
     }
     public Status getStatus() {
         return status;
@@ -69,5 +79,29 @@ public class CreditCard {
     }
     public void setFoul(Integer foul) {
         this.foul = foul;
+    }
+
+    public ArrayList<Transaction> getTransactions() {
+        return transactions;
+    }
+
+    public void setTransactions(ArrayList<Transaction> transactions) {
+        this.transactions = transactions;
+    }
+
+    public ArrayList<Transfer> getTransfers() {
+        return transfers;
+    }
+
+    public void setTransfers(ArrayList<Transfer> transfers) {
+        this.transfers = transfers;
+    }
+
+    public Account getAccount() {
+        return account;
+    }
+
+    public void setAccount(Account account) {
+        this.account = account;
     }
 }
