@@ -1,16 +1,28 @@
 package Entities;
 
+import java.util.Date;
+
 public class Transfer {
     private String transferId;
     private CreditCard senderCard;
     private CreditCard ReceiverCard;
     private Integer amount;
+    private Date date;
 
-    public Transfer( CreditCard senderCard, CreditCard ReceiverCard, Integer amount) {
+    public Transfer( CreditCard senderCard, CreditCard ReceiverCard, Integer amount,Date date) {
         this.transferId =String.valueOf(Math.floor(Math.random()*(1000)+Math.pow(10,15))) ;
         this.senderCard = senderCard;
         this.ReceiverCard = ReceiverCard;
         this.amount = amount;
+        this.date=date;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
     }
 
     public String getTransferId() {
