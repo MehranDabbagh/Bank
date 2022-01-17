@@ -1,29 +1,33 @@
 package Entities;
 
+import java.util.Random;
+
 public class Account {
     private String accId;
     private Status status;
-    private String username;
     private String password;
     private Integer amount;
     private String branchName;
-    private String userId;
-    public Account(String accId, String status, String username, String password, Integer amount, String branchName,String userId) {
-        this.accId = accId;
+   private CreditCard creditCard;
+   private Integer foul;
+    public Account(String password, String branchName) {
+        this.accId = String.valueOf(Math.floor(Math.random()*(1000)+Math.pow(10,15))) ;
         this.status = Status.OPEN;
-        this.username = username;
+        this.password = password;
+        this.amount = 10000;
+        this.branchName=branchName;
+        this.foul=0;
+    }
+    public Account(String password,String accId, String branchName,int amount,Status status,CreditCard creditCard) {
+        this.accId = accId;
+        this.status =status;
         this.password = password;
         this.amount = amount;
         this.branchName=branchName;
-        this.userId=userId;
+        this.creditCard=creditCard;
+        this.foul=0;
     }
     public Account() {
-    }
-    public String getUserId() {
-        return userId;
-    }
-    public void setUserId(String userId) {
-        this.userId = userId;
     }
     public String getBranchName() {
         return branchName;
@@ -43,12 +47,6 @@ public class Account {
     public void setStatus(Status status) {
         this.status = status;
     }
-    public String getUsername() {
-        return username;
-    }
-    public void setUsername(String username) {
-        this.username = username;
-    }
     public String getPassword() {
         return password;
     }
@@ -60,5 +58,17 @@ public class Account {
     }
     public void setAmount(Integer amount) {
         this.amount = amount;
+    }
+    public CreditCard getCreditCard() {
+        return creditCard;
+    }
+    public void setCreditCard(CreditCard creditCard) {
+        this.creditCard = creditCard;
+    }
+    public Integer getFoul() {
+        return foul;
+    }
+    public void setFoul(Integer foul) {
+        this.foul = foul;
     }
 }
