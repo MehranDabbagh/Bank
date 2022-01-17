@@ -46,7 +46,7 @@ public class CardRepositories implements CRUD <CreditCard> {
         java.sql.Date date1=new  java.sql.Date(date.getTime());
         preparedStatement.setDate(4,date1);
         preparedStatement.setString(5,String.valueOf(creditCard.getStatus()));
-        preparedStatement.setString(5,creditCard.getAccount().getAccId());
+        preparedStatement.setString(6,creditCard.getAccount().getAccId());
         preparedStatement.execute();
         return creditCard.getCardId();
     }
