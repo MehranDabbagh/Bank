@@ -2,6 +2,7 @@ package Entities;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -11,6 +12,8 @@ public class CreditCard {
     private String password;
     private Date expireDate;
     private Status status;
+    private ArrayList<Transaction> transactions=new ArrayList<Transaction>();
+    private ArrayList<Transfer> transfers=new ArrayList<Transfer>();
     private Integer foul;
     public CreditCard(String password) {
         this.cardId = String.valueOf(Math.floor(Math.random()*(1000)+Math.pow(10,15))) ;
@@ -21,6 +24,15 @@ public class CreditCard {
         this.expireDate =now.getTime();
         this.status=Status.OPEN;
         this.foul=0;
+    }
+    public CreditCard(String cardId,String cvv2,String password,Date expireDate,Status status,ArrayList<Transaction> transactions,ArrayList <Transfer> transfers){
+        this.cardId=cardId;
+        this.cvv2=cvv2;
+        this.password=password;
+        this.expireDate=expireDate;
+        this.status=status;
+      if(transactions!=null){this.transactions=transactions;}
+       if(transfers!=null){ this.transfers=transfers;}
     }
     public Status getStatus() {
         return status;

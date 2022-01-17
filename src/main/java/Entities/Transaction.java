@@ -5,7 +5,7 @@ public class Transaction {
     private TransactionType transactionType;
     public Integer amount;
     public Transaction(String transactionId, TransactionType transactionType, Integer amount) {
-        this.transactionId = transactionId;
+        this.transactionId = String.valueOf(Math.floor(Math.random()*(1000)+Math.pow(10,15)));
         this.transactionType = transactionType;
         this.amount=amount;
     }
