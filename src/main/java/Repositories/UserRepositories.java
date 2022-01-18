@@ -6,7 +6,10 @@ import MyConnection.PostgresConnection;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserRepositories {
     Connection connection= PostgresConnection.getInstance().getConnection();
@@ -18,12 +21,32 @@ public class UserRepositories {
             e.printStackTrace();
         }
     }
-    public void createUser(String nationalCode){
-         String sql="";
+    public void createUser(String nationalCode,String password){
+         String sql="insert into users(national_code,password ) values (?,?)";
         try {
             PreparedStatement preparedStatement=connection.prepareStatement(sql);
+            preparedStatement.setString(1,nationalCode);
+            preparedStatement.setString(2,password);
+            preparedStatement.execute();
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+    public User read(String nationalcode,String passwprd){
+
+        String sql="select * from  users where national_code=? and  password=?";
+        try {
+            PreparedStatement preparedStatement=connection.prepareStatement(sql);;
+            preparedStatement.setString(1,nationalcode);
+            preparedStatement.setString(2,passwprd);
+            ResultSet resultSet=preparedStatement.executeQuery();
+            if(resultSet.next()){
+                User user=new User(resultSet.getString("national_code"),resultSet.getString("password"));
+               return user;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }
