@@ -7,6 +7,13 @@ public class User {
     private String nationalCode;
     private String password;
     private ArrayList<Account> accounts=new ArrayList<Account>();
+    public User(String nationalCode){
+        this.nationalCode=nationalCode;
+    }
+    public User(String nationalCode,String password){
+        this.nationalCode=nationalCode;
+        this.password=password;
+    }
     public User(String nationalCode,String password,Account account) {
         this.nationalCode = nationalCode;
         this.password=password;

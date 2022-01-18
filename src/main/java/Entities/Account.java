@@ -11,6 +11,16 @@ public class Account {
     private CreditCard creditCard;
     private Integer foul;
     private User user;
+    public Account(User user){
+        this.accId = String.valueOf(Math.floor(Math.random()*(1000)+Math.pow(10,15))) ;
+        this.status = Status.OPEN;
+        this.amount = 10000;
+        this.foul=0;
+        this.user=user;
+        this.password="?";
+        this.branchName="?";
+
+    }
     public Account(String password,String branchName){
         this.accId = String.valueOf(Math.floor(Math.random()*(1000)+Math.pow(10,15))) ;
         this.status = Status.OPEN;
