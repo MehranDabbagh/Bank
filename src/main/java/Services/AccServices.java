@@ -1,17 +1,20 @@
 package Services;
 
-import Entities.Account;
-import Entities.Status;
-import Entities.User;
+import Entities.*;
 import Repositories.AccRepositories;
+import Repositories.TransactionRepositories;
+import Repositories.TransferRepositories;
 
-import java.util.ArrayList;
+import java.sql.SQLException;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
 public class AccServices  {
     private AccRepositories accRepositories=new AccRepositories();
     private Account loggedInAcc;
+    private TransferRepositories transferRepositories=new TransferRepositories();
+    private TransactionRepositories transactionRepositories=new TransactionRepositories();
     public Account login(String AccId,String password){
        Account account= accRepositories.readById(AccId);
        if(account==null){
@@ -42,7 +45,7 @@ public class AccServices  {
        }
     public void update(Integer operator,String newValue) {
 
-     Account test=  accRepositories.readById(loggedInAcc.getPassword());
+     Account test=  accRepositories.readById(loggedInAcc.getAccId());
      if(operator>=0 && operator<2 && newValue!=null) {
          switch (operator) {
              case 0:
@@ -71,4 +74,41 @@ public class AccServices  {
         }
 
     }
+     public void showingTransactionAndTransfers(Date date) throws SQLException {
+         java.sql.Date date1=new  java.sql.Date(date.getTime());
+        List<Transfer> transfers= transferRepositories.readAll();
+        List<Transaction> transactions= transactionRepositories.readAll();
+         for (Transfer transfer:transfers
+              ) {
+             if(transfer.getDate()==date1){
+                 System.out.println("sender Id: "+transfer.getSenderCard().getCardId()+" receiver Id :"+transfer.getReceiverCard().getCardId()+" amount: "+transfer.getAmount()+ " In:"+transfer.getDate());
+             }
+         }
+         for (Transaction transaction :transactions
+         ) {
+             if(transaction.getDate()==date1){
+                 System.out.println("Acc Id: "+ transaction.getAccount().getAccId()+" amount: "+ transaction.getAmount()+ " In:"+ transaction.getDate()+" operation type:"+transaction.getTransactionType());
+             }
+         }
+     }
+     public void showingTransactionAndTransfersSinceNow(Date date) throws SQLException{
+         java.sql.Date date1=new  java.sql.Date(date.getTime());
+         Date date2=new Date();
+         int compare1=date1.compareTo(date2);
+         List<Transfer> transfers= transferRepositories.readAll();
+         List<Transaction> transactions= transactionRepositories.readAll();
+         for (Transfer transfer:transfers
+         ) {
+             int compare2=transfer.getDate().compareTo(date2);
+             if(compare1<0 && compare2>0 ){
+                 System.out.println("sender Id: "+transfer.getSenderCard().getCardId()+" receiver Id :"+transfer.getReceiverCard().getCardId()+" amount: "+transfer.getAmount()+ " In:"+transfer.getDate());
+             }
+         }
+         for (Transaction transaction :transactions
+         ) {
+             if(transaction.getDate()==date1){
+                 System.out.println("Acc Id: "+ transaction.getAccount().getAccId()+" amount: "+ transaction.getAmount()+ " In:"+ transaction.getDate()+" operation type:"+transaction.getTransactionType());
+             }
+         }
+     }
 }
