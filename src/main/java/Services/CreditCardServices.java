@@ -13,7 +13,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
-public class creditCardServices {
+public class CreditCardServices {
     CardRepositories cardRepositories=new CardRepositories();
     private TransferRepositories transferRepositories=new TransferRepositories();
     private CreditCard loggedIn;
@@ -49,13 +49,10 @@ public class creditCardServices {
     public void read() throws SQLException {
             System.out.println("cardId "+loggedIn.getCardId()+" acc of the card: "+loggedIn.getAccount().getAccId()+ " cvv2: "+loggedIn.getCvv2()+" expire date: "+loggedIn.getExpireDate()+" status: "+loggedIn.getStatus());
     }
-    public void update(Integer operator,String newValue) throws SQLException{
+    public void update(String password) throws SQLException{
         CreditCard creditCard=cardRepositories.readById(loggedIn.getCardId());
-        switch (operator){
-            case 0:creditCard.setPassword(newValue);cardRepositories.update(creditCard);break;
-            case 1:creditCard.setStatus(Status.valueOf(newValue));cardRepositories.update(creditCard);break;
+            creditCard.setPassword(password);cardRepositories.update(creditCard);
         }
-    }
     public void delete() throws SQLException {
         cardRepositories.delete(loggedIn.getCardId());
         loggedIn=null;

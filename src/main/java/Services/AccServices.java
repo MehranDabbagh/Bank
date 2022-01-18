@@ -43,20 +43,11 @@ public class AccServices  {
        Account account= accRepositories.readById(loggedInAcc.getAccId());
        System.out.println("acc id: "+account.getAccId()+" amount: "+account.getAmount()+ " branch: "+account.getBranchName()+" owner: "+account.getUser().getNationalCode());
        }
-    public void update(Integer operator,String newValue) {
-
+    public void update(String password) {
      Account test=  accRepositories.readById(loggedInAcc.getAccId());
-     if(operator>=0 && operator<2 && newValue!=null) {
-         switch (operator) {
-             case 0:
-                 test.setPassword(newValue);
+     if(password!=null){
+                 test.setPassword(password);
                  accRepositories.update(test);
-                 break;
-             case 1:
-                 test.setStatus(Status.valueOf(newValue));
-                 accRepositories.update(test);
-                 break;
-         }
      } else System.out.println("please enter valid input!");
     }
     public void delete() {
@@ -110,5 +101,8 @@ public class AccServices  {
                  System.out.println("Acc Id: "+ transaction.getAccount().getAccId()+" amount: "+ transaction.getAmount()+ " In:"+ transaction.getDate()+" operation type:"+transaction.getTransactionType());
              }
          }
+     }
+     public void logout(){
+        this.loggedInAcc=null;
      }
 }

@@ -4,7 +4,7 @@ import Repositories.BankRepositories;
 import Repositories.ManagerRepositories;
 import Repositories.NormalEmployeeRepositories;
 
-public class adminService {
+public class AdminService {
     private BankRepositories bankRepositories=new BankRepositories();
     private ManagerRepositories managerRepositories=new ManagerRepositories();
     private NormalEmployeeRepositories normalEmployeeRepositories=new NormalEmployeeRepositories();
