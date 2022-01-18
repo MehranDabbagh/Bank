@@ -5,10 +5,12 @@ import Entities.Status;
 import Entities.User;
 import Repositories.AccRepositories;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class AccServices  {
-    private AccRepositories accRepositories;
+    private AccRepositories accRepositories=new AccRepositories();
     private Account loggedInAcc;
     public Account login(String AccId,String password){
        Account account= accRepositories.readById(AccId);
@@ -57,5 +59,16 @@ public class AccServices  {
     public void delete() {
        accRepositories.delete(loggedInAcc.getAccId());
        loggedInAcc=null;
+    }
+    public void showingUserAccounts(){
+       List<Account> accounts=accRepositories.readAll();
+        for (Account account:accounts
+             ) {
+            if(account.getUser()==loggedInAcc.getUser()){
+                System.out.println("acc id: "+account.getAccId()+" amount: "+account.getAmount()+ " branch: "+account.getBranchName()+" owner: "+account.getUser().getNationalCode());
+            }
+
+        }
+
     }
 }
