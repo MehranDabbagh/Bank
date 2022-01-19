@@ -2,21 +2,21 @@ package Services;
 
 import Entities.*;
 import Repositories.AccRepositories;
+import Repositories.CardRepositories;
 import Repositories.TransactionRepositories;
 import Repositories.TransferRepositories;
 
 import java.sql.SQLException;
 import java.time.DateTimeException;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class AccServices  {
     private AccRepositories accRepositories=new AccRepositories();
     private Account loggedInAcc;
     private TransferRepositories transferRepositories=new TransferRepositories();
     private TransactionRepositories transactionRepositories=new TransactionRepositories();
+    private CardRepositories cardRepositories=new CardRepositories();
 
     public AccServices() throws SQLException, ClassNotFoundException {
     }
@@ -73,24 +73,7 @@ public class AccServices  {
            }
        }
     }
-     public void showingTransactionAndTransfers(Date date) throws SQLException {
-         java.sql.Date date1=new  java.sql.Date(date.getTime());
-        List<Transfer> transfers= transferRepositories.readAll();
-        List<Transaction> transactions= transactionRepositories.readAll();
-         for (Transfer transfer:transfers
-              ) {
-             if(transfer.getDate()==date1){
-                 System.out.println("sender Id: "+transfer.getSenderCardId()+" receiver Id :"+transfer.getReceiverCardId()+" amount: "+transfer.getAmount()+ " In:"+transfer.getDate());
-             }
-         }
-         for (Transaction transaction :transactions
-         ) {
-             if(transaction.getDate()==date1){
-                 System.out.println("Acc Id: "+ transaction.getAccId()+" amount: "+ transaction.getAmount()+ " In:"+ transaction.getDate()+" operation type:"+transaction.getTransactionType());
-             }
-         }
-     }
-     public void showingTransactionAndTransfersSinceNow(Date date) throws SQLException{
+     public void showingTransactionAndTransfersSinceNow(Date date,String accId) throws SQLException{
 
          java.sql.Date date1=new  java.sql.Date(date.getTime());
          Date date2=new Date();
@@ -100,15 +83,26 @@ public class AccServices  {
          cal1.setTime(date2);
          List<Transfer> transfers= transferRepositories.readAll();
          List<Transaction> transactions= transactionRepositories.readAll();
+        List<CreditCard> creditCards=cardRepositories.readAll();
+        CreditCard currentCard=creditCards.get(0);
+         for (CreditCard creditcard:creditCards
+              ) {
+             if(Objects.equals(creditcard.getAccId(), accId)){
+                 currentCard=creditcard;
+             }
+         }
+
          if(transfers!=null){
-
-
          for (Transfer transfer:transfers
          ) {
 
 
              if(cal1.compareTo(cal)>0 ){
-                 System.out.println("sender Id: "+transfer.getSenderCardId()+" receiver Id :"+transfer.getSenderCardId()+" amount: "+transfer.getAmount()+ " In:"+transfer.getDate());
+                 if(Objects.equals(transfer.getSenderCardId(), currentCard.getCardId()) || Objects.equals(transfer.getReceiverCardId(), currentCard.getCardId())){
+
+                     System.out.println("sender Id: "+transfer.getSenderCardId()+" receiver Id :"+transfer.getSenderCardId()+" amount: "+transfer.getAmount()+ " In:"+transfer.getDate());
+
+                 }
              }
          }}
          if(transactions!=null){
@@ -117,9 +111,14 @@ public class AccServices  {
 
 
              if(cal1.compareTo(cal)>0){
-                 System.out.println("Acc Id: "+ transaction.getAccId()+" amount: "+ transaction.getAmount()+ " In:"+ transaction.getDate()+" operation type:"+transaction.getTransactionType());
+                 if(Objects.equals(transaction.getAccId(), accId)){
+
+                     System.out.println("Acc Id: "+ transaction.getAccId()+" amount: "+ transaction.getAmount()+ " In:"+ transaction.getDate()+" operation type:"+transaction.getTransactionType());
+
+                 }
              }
          }}
+
      }
      public void logout(){
         this.loggedInAcc=null;
