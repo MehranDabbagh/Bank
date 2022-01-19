@@ -94,7 +94,8 @@ public class CreditCardServices {
             }
         }
 
-        if(receiverCardId.length()>2){
+        if(SenderCardId.length()==8 && receiverCardId.length()==8 ){
+            if(cvv2.length()==6){
 
             if(senderAcc.getAmount()>amount+600){
                 Date date2=new Date();
@@ -117,6 +118,7 @@ public class CreditCardServices {
                 }else {System.out.println("your card is not valid anymore!");return;}
             }else {System.out.println("you don't have enough money for this operation!");
             return;}
+        }else System.out.println("receiver creditCard is not valid!");
         }else System.out.println("receiver creditCard is not valid!");
 
     }
