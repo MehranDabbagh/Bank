@@ -108,7 +108,7 @@ public class CreditCardServices {
                     transferRepositories.create(transfer);
                     senderAcc.setAmount( senderAcc.getAmount()-(amount+600));
                    receiverAcc.setAmount( receiverAcc.getAmount()+amount);
-                    if(Objects.equals(senderCard.getCardId(), SenderCardId) && Objects.equals(senderCard.getPassword(), password) && senderCard.getExpireDate()==expireDate && Objects.equals(senderCard.getCvv2(), cvv2)) {
+                    if(Objects.equals(senderCard.getCardId(), SenderCardId) && Objects.equals(senderCard.getPassword(), password)  && Objects.equals(senderCard.getCvv2(), cvv2)) {
                         accRepositories.update(senderAcc);
                         accRepositories.update(receiverAcc);
                     }else System.out.println("wrong details!");
@@ -126,7 +126,6 @@ public class CreditCardServices {
         switch (operator){
             case 0:{if(loggedInAcc.getAmount()>=amount){
                 loggedInAcc.setAmount(loggedInAcc.getAmount()-amount);
-                System.out.println(loggedInAcc.getAmount());
                 accRepositories.update(loggedInAcc);
                 Date date2=new Date();
                 Transaction transaction=new Transaction(TransactionType.WITHDREW,amount,loggedInAcc.getAccId(),date2);
@@ -136,10 +135,34 @@ public class CreditCardServices {
             }
             case 1:loggedInAcc.setAmount(loggedInAcc.getAmount()+amount);
                 accRepositories.update(loggedInAcc);
-                System.out.println(loggedInAcc.getAmount());
                 Date date2=new Date();
                 Transaction transaction=new Transaction(TransactionType.DEPOSIT,amount,loggedInAcc.getAccId(),date2);
                 transactionRepositories.create(transaction);
+        }
+    }
+    public void initialize(String cardId) throws SQLException {
+       List<CreditCard> creditCards= cardRepositories.readAll();
+       CreditCard currentCard = creditCards.get(0);
+       Scanner input=new Scanner(System.in);
+        for (CreditCard creditcard:creditCards
+             ) {
+           if(Objects.equals(creditcard.getCardId(), cardId)){
+               if(Objects.equals(creditcard.getPassword(), "?")){
+                   System.out.println("please initialize your password");
+                   String password=input.next();
+                   loggedIn=creditcard;
+                   update(password);
+               }else {  System.out.println("please enter your old password");;
+                   String password=input.next();
+                   if(Objects.equals(creditcard.getPassword(), password)){
+                       System.out.println("please enter your new  password");;
+                       password=input.next();
+                     loggedIn=creditcard;
+                     update(password);
+                   }else System.out.println("wrong!");
+               }
+           }
+
         }
     }
 

@@ -26,7 +26,6 @@ public class TransactionRepositories implements CRUD<Transaction> {
 
     @Override
     public String create(Transaction transaction) throws SQLException {
-        System.out.println(transaction.getAccId()+" "+transaction.getAmount()+" "+transaction.getDate());
         String sqlTest="select * from transactions where  transactionId=?  ";
         PreparedStatement preparedStatement=connection.prepareStatement(sqlTest);
         preparedStatement.setString(1,transaction.getTransactionId());

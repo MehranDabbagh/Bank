@@ -65,7 +65,7 @@ public class Main {
     public static void main(String[] args) throws SQLException, ParseException, ClassNotFoundException {
         boolean condition=true;
         while(condition){
-            System.out.println("enter 0 for admin menu and 1 for users menu and 2 for exit");
+            System.out.println("0-admin menu"+"\n"+"1-users menu"+ "\n" +"2-exit");
             int operator=input.nextInt();
             switch (operator){
                 case 0:
@@ -86,7 +86,7 @@ public class Main {
         String branchName;
         String nationalCode;
           while(condition){
-              System.out.println("enter 0 for adding bank 1 for adding manager 2 for adding normal employee and 3 for exit");
+              System.out.println("0-adding new bank "+"\n"+"1-adding new manager "+"\n"+"2-adding new normal employee"+"\n"+" 3-exit");
               int operator=input.nextInt();
               switch (operator){
                   case 0:
@@ -115,7 +115,7 @@ public class Main {
     public static void usersMenu() throws SQLException, ParseException, ClassNotFoundException {
           boolean condition=true;
           while(condition){
-              System.out.println("enter 0 for login and 1 for registering a new user and 2 for exit");
+              System.out.println("0-login "+"\n"+"1-registering a new user"+"\n"+"2-exit");
               int operator=input.nextInt();
               switch (operator){
                   case 0:userLoginMenu();break;
@@ -148,7 +148,7 @@ public class Main {
         if(userServices.login(nationalCode,password)) {
             boolean condition = true;
             while (condition) {
-                System.out.println("enter 0 for creating a new acc and 1 for showing your Accs and 2 for login to your acc and 3 for exit ");
+                System.out.println("0-creating a new acc" +"\n"+"1-showing your Accs "+"\n"+"2-login to your acc"+"\n"+"3-exit ");
                 Integer operator = input.nextInt();
                 User user = new User(nationalCode, password);
 
@@ -185,8 +185,8 @@ public class Main {
             boolean condition=true;
             while(condition) {
 
-                System.out.println("enter 0 for adding creditCard 1 for deleting your current credit cart and 2 for editing you acc password " +
-                        "and 3 for editing your card password and 4 for transaction or card to card and 5 for showing your transactions till now and 6 for transaction in specific date and 7 exit ");
+                System.out.println("0-adding creditCard" +"\n"+"1-deleting your current credit cart "+"\n"+"2-editing you acc password " +
+                        "\n"+"3-editing your card password" +"\n"+"4-transaction or card to card"+"\n"+"5-showing your transactions till now"+"\n"+"6-exit");
                 int operator = input.nextInt();
                 switch (operator) {
                     case 0:
@@ -201,15 +201,10 @@ public class Main {
                         accServices.update(accNewPassword);
                         break;
                     case 3:
-                        System.out.println("please enter your cardId");
-                        String cardId = input.next();
-                        System.out.println("please enter your password (if you didn't initialize enter ? ) ");
-                        String cardPassword1 = input.next();
-                        if (creditCardServices.login(cardId, cardPassword1)) {
-                            System.out.println("please enter your new password");
-                            String cardNewPassword= input.next();
-                            creditCardServices.update(cardNewPassword);
-                        } else System.out.println("password is wrong!");
+                        System.out.println("please enter your card Id");
+                        String cardId=input.next();
+                        creditCardServices.initialize(cardId);
+
                         break;
 
                 case 4:
@@ -219,15 +214,11 @@ public class Main {
                     System.out.println("please enter the date (dd/MM/yyyy)");
                     String date = input.next();
                     Date date1 = new SimpleDateFormat("dd/MM/yyyy").parse(date);
-                    accServices.showingTransactionAndTransfersSinceNow(date1);
+                    System.out.println("please enter the acc id");
+                    String accId1=input.next();
+                    accServices.showingTransactionAndTransfersSinceNow(date1,accId1);
                     break;
                 case 6:
-                    System.out.println("please enter the date (dd/MM/yyyy)");
-                    String date3 = input.next();
-                    Date date2 = new SimpleDateFormat("dd/MM/yyyy").parse(date3);
-                    accServices.showingTransactionAndTransfers(date2);
-                    break;
-                case 7:
                     condition = false;
                     accServices.logout();
                     break;
@@ -242,7 +233,7 @@ public class Main {
 
         boolean condition=true;
         while(condition) {
-            System.out.println("enter 0 for for withdrew and 1 for deposit and 2 for card to card and 3 for exit");
+            System.out.println("0-withdrew"+ "\n"+ "1-deposit"+"\n"+ "2_card to card"+"\n"+"3-exit");
             int operator = input.nextInt();
             switch (operator) {
                 case 0:
