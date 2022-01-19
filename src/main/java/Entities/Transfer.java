@@ -4,15 +4,15 @@ import java.util.Date;
 
 public class Transfer {
     private String transferId;
-    private CreditCard senderCard;
-    private CreditCard ReceiverCard;
+    private String senderCardId;
+    private String ReceiverCardId;
     private Integer amount;
     private Date date;
 
-    public Transfer( CreditCard senderCard, CreditCard ReceiverCard, Integer amount,Date date) {
+    public Transfer( String senderCardId, String ReceiverCardId, Integer amount,Date date) {
         this.transferId =String.valueOf(Math.floor(Math.random()*(1000)+Math.pow(10,15))) ;
-        this.senderCard = senderCard;
-        this.ReceiverCard = ReceiverCard;
+        this.senderCardId = senderCardId;
+        this.ReceiverCardId = ReceiverCardId;
         this.amount = amount;
         this.date=date;
     }
@@ -33,20 +33,20 @@ public class Transfer {
         this.transferId = transferId;
     }
 
-    public CreditCard getSenderCard() {
-        return senderCard;
+    public String getSenderCardId() {
+        return senderCardId;
     }
 
-    public void setSenderCard(CreditCard senderCard) {
-        this.senderCard = senderCard;
+    public void setSenderCardId(String senderCardId) {
+        this.senderCardId = senderCardId;
     }
 
-    public CreditCard getReceiverCard() {
-        return ReceiverCard;
+    public String getReceiverCardId() {
+        return ReceiverCardId;
     }
 
-    public void setReceiverCard(CreditCard receiverCard) {
-        ReceiverCard = receiverCard;
+    public void setReceiverCardId(String receiverCardId) {
+        ReceiverCardId = receiverCardId;
     }
 
     public Integer getAmount() {

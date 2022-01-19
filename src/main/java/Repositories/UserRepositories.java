@@ -4,28 +4,40 @@ import Entities.User;
 import MyConnection.PostgresConnection;
 
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class UserRepositories {
-    Connection connection= PostgresConnection.getInstance().getConnection();
-    public UserRepositories(){
-        String sql="create table if not exists users(national_code varchar(50) unique not null ,password  varchar(50) not null  )";
+    Connection connection=PostgresConnection.getInstance().getConnection();
+    public UserRepositories() throws ClassNotFoundException, SQLException {
+        String sql="create table if not exists users(national_code varchar(50) unique not null ,password  varchar(50) not null ,branchName )";
+
         try {
             PreparedStatement preparedStatement=connection.prepareStatement(sql);
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
     }
-    public void createUser(String nationalCode,String password){
-         String sql="insert into users(national_code,password ) values (?,?)";
+    public void createUser(String nationalCode,String password,String branchName){
+        String sqlBranchTest="select from bank where branchName=?";
+         String sql="insert into users(national_code,password,branchName ) values (?,?,?)";
+         String sqlTest="select from users where national_code=?";
         try {
-            PreparedStatement preparedStatement=connection.prepareStatement(sql);
+            PreparedStatement preparedStatement= connection.prepareStatement(sqlTest);
+            preparedStatement.setString(1,nationalCode);
+            ResultSet resultSet=preparedStatement.executeQuery();
+            if(resultSet.next()){
+                System.out.println("there is a user with this national code!");
+            }else {
+                preparedStatement=connection.prepareStatement(sqlBranchTest);
+                preparedStatement.setString(1,branchName);
+                ResultSet resultSet1=preparedStatement.executeQuery();
+                if(resultSet1.next()){
+           preparedStatement=connection.prepareStatement(sql);
             preparedStatement.setString(1,nationalCode);
             preparedStatement.setString(2,password);
-            preparedStatement.execute();
+            preparedStatement.setString(3,branchName);
+            preparedStatement.execute();}else System.out.println("there is no branch with this  name");}
         } catch (SQLException e) {
             e.printStackTrace();
         }

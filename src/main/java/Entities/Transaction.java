@@ -6,13 +6,20 @@ public class Transaction {
     private String transactionId;
     private TransactionType transactionType;
     private Integer amount;
-    private Account account;
+    private String accId;
     private Date date;
-    public Transaction(String transactionId, TransactionType transactionType, Integer amount,Account account,Date date) {
+    public Transaction(String transactionId, TransactionType transactionType, Integer amount,String accId,Date date) {
+ this.transactionId=transactionId;
+        this.transactionType = transactionType;
+        this.amount=amount;
+        this.accId=accId;
+        this.date=date;
+    }
+    public Transaction( TransactionType transactionType, Integer amount,String accId,Date date){
         this.transactionId = String.valueOf(Math.floor(Math.random()*(1000)+Math.pow(10,15)));
         this.transactionType = transactionType;
         this.amount=amount;
-        this.account=account;
+        this.accId=accId;
         this.date=date;
     }
 
@@ -24,12 +31,12 @@ public class Transaction {
         this.amount = amount;
     }
 
-    public Account getAccount() {
-        return account;
+    public String getAccId() {
+        return accId;
     }
 
-    public void setAccount(Account account) {
-        this.account = account;
+    public void setAccId(String accId) {
+        this.accId = accId;
     }
 
     public Date getDate() {

@@ -1,28 +1,31 @@
 package Services;
 
-import Entities.Account;
-import Entities.CreditCard;
-import Entities.Status;
-import Entities.Transfer;
+import Entities.*;
+import Repositories.AccRepositories;
 import Repositories.CardRepositories;
+import Repositories.TransactionRepositories;
 import Repositories.TransferRepositories;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 public class CreditCardServices {
     CardRepositories cardRepositories=new CardRepositories();
     private TransferRepositories transferRepositories=new TransferRepositories();
     private CreditCard loggedIn;
+    private AccRepositories accRepositories=new AccRepositories();
+    private TransactionRepositories transactionRepositories=new TransactionRepositories();
+
+    public CreditCardServices() throws SQLException, ClassNotFoundException {
+    }
+
     public void create(Account account) throws SQLException {
+
         List<CreditCard> creditCards=cardRepositories.readAll();
         boolean condition=true;
         for (CreditCard creditcard:creditCards
              ) {
-            if(creditcard.getAccount().getAccId()==account.getAccId()){
+            if(Objects.equals(creditcard.getAccId(), account.getAccId())){
                 condition=false;
             }
         }
@@ -31,7 +34,7 @@ public class CreditCardServices {
             System.out.println("this account already have a credit card!");
             return;
         }else {
-            CreditCard creditCard=new CreditCard("?",account);
+            CreditCard creditCard=new CreditCard("?",account.getAccId());
             cardRepositories.create(creditCard);
         }
     }
@@ -47,29 +50,69 @@ public class CreditCardServices {
        } return false;
     }
     public void read() throws SQLException {
-            System.out.println("cardId "+loggedIn.getCardId()+" acc of the card: "+loggedIn.getAccount().getAccId()+ " cvv2: "+loggedIn.getCvv2()+" expire date: "+loggedIn.getExpireDate()+" status: "+loggedIn.getStatus());
+            System.out.println("cardId "+loggedIn.getCardId()+" acc of the card: "+loggedIn.getAccId()+ " cvv2: "+loggedIn.getCvv2()+" expire date: "+loggedIn.getExpireDate()+" status: "+loggedIn.getStatus());
     }
     public void update(String password) throws SQLException{
         CreditCard creditCard=cardRepositories.readById(loggedIn.getCardId());
             creditCard.setPassword(password);cardRepositories.update(creditCard);
         }
-    public void delete() throws SQLException {
-        cardRepositories.delete(loggedIn.getCardId());
+    public void delete(Account account) throws SQLException {
+        cardRepositories.delete(account.getAccId());
         loggedIn=null;
     }
-    public void transfer(String receiverCardId,Integer amount) throws SQLException{
-        if(receiverCardId.length()==16 || receiverCardId.length()==14){
-            if(loggedIn.getAccount().getAmount()>amount+600){
-                Date date = new Date();
-                int compare=loggedIn.getExpireDate().compareTo(date);
-                if(compare>0){
-                  CreditCard receiverCard=cardRepositories.readById("receiverCardId");
-                    Transfer transfer=new Transfer(loggedIn, receiverCard ,amount,date);
+    public void transfer(String SenderCardId,String receiverCardId,String cvv2,String password,Date expireDate,Integer amount) throws SQLException{
+      List<CreditCard>  creditCards=cardRepositories.readAll();
+      CreditCard senderCard =creditCards.get(0);
+      CreditCard receiverCard=creditCards.get(0);
+        for (CreditCard creditCard1:creditCards
+             ) {
+            if(Objects.equals(creditCard1.getCardId(), SenderCardId)){
+                senderCard =creditCard1;
+            }
+        }
+        for (CreditCard creditCard2:creditCards
+        ) {
+            if(Objects.equals(creditCard2.getCardId(), receiverCardId)){
+                receiverCard=creditCard2;
+            }
+        }
+        List<Account> accounts=accRepositories.readAll();
+        Account senderAcc =accounts.get(0);
+        for (Account account2:accounts
+        ) {
+
+            if(Objects.equals(account2.getAccId(), senderCard.getAccId())){
+
+                senderAcc =account2;
+            }
+        }
+        Account receiverAcc =accounts.get(0);
+        for (Account account3:accounts
+        ) {
+            if(Objects.equals(account3.getAccId(), receiverCard.getAccId())){
+                receiverAcc =account3;
+            }
+        }
+
+        if(receiverCardId.length()>2){
+
+            if(senderAcc.getAmount()>amount+600){
+                Date date2=new Date();
+                Calendar cal = Calendar.getInstance();
+                cal.setTime(senderCard.getExpireDate());
+                Calendar cal1 = Calendar.getInstance();
+                cal1.setTime(date2);
+                if(cal1.compareTo(cal)<0){
+
+                    Transfer transfer=new Transfer(senderCard.getCardId(), receiverCard.getCardId() ,amount,date2);
                     transferRepositories.create(transfer);
-                    loggedIn.getAccount().setAmount( loggedIn.getAccount().getAmount()-(amount+600));
-                    receiverCard.getAccount().setAmount( receiverCard.getAccount().getAmount()+amount);
-                      cardRepositories.update(loggedIn);
-                      cardRepositories.update(receiverCard);
+                    senderAcc.setAmount( senderAcc.getAmount()-(amount+600));
+                   receiverAcc.setAmount( receiverAcc.getAmount()+amount);
+                    if(Objects.equals(senderCard.getCardId(), SenderCardId) && Objects.equals(senderCard.getPassword(), password) && senderCard.getExpireDate()==expireDate && Objects.equals(senderCard.getCvv2(), cvv2)) {
+                        accRepositories.update(senderAcc);
+                        accRepositories.update(receiverAcc);
+                    }else System.out.println("wrong details!");
+
                       return;
                 }else {System.out.println("your card is not valid anymore!");return;}
             }else {System.out.println("you don't have enough money for this operation!");
@@ -77,21 +120,27 @@ public class CreditCardServices {
         }else System.out.println("receiver creditCard is not valid!");
 
     }
-    public void transaction(Integer operator,Integer amount){
+    public void transaction(Integer operator,Integer amount,Account account) throws SQLException {
+        Account loggedInAcc=accRepositories.readById(account.getAccId());
+
         switch (operator){
-            case 0:{if(loggedIn.getAccount().getAmount()>=amount){
-               loggedIn.getAccount().setAmount(loggedIn.getAccount().getAmount()-amount);
+            case 0:{if(loggedInAcc.getAmount()>=amount){
+                loggedInAcc.setAmount(loggedInAcc.getAmount()-amount);
+                System.out.println(loggedInAcc.getAmount());
+                accRepositories.update(loggedInAcc);
+                Date date2=new Date();
+                Transaction transaction=new Transaction(TransactionType.WITHDREW,amount,loggedInAcc.getAccId(),date2);
+              transactionRepositories.create(transaction);
             }else {System.out.println("there is no enough money for withdrew!");return;}
             break;
             }
-            case 1:loggedIn.getAccount().setAmount(loggedIn.getAccount().getAmount()+amount);
+            case 1:loggedInAcc.setAmount(loggedInAcc.getAmount()+amount);
+                accRepositories.update(loggedInAcc);
+                System.out.println(loggedInAcc.getAmount());
+                Date date2=new Date();
+                Transaction transaction=new Transaction(TransactionType.DEPOSIT,amount,loggedInAcc.getAccId(),date2);
+                transactionRepositories.create(transaction);
         }
     }
-    public void transferWithoutLogin(String senderId,String password,String cvv2,String receiverCardId,Integer amount) throws SQLException {
-      if( login(senderId,password)){
-          if(Objects.equals(loggedIn.getCvv2(), cvv2)){
-                transfer(receiverCardId,amount);
-          }else System.out.println("cvv2 is wrong!"); return;
-      } System.out.println("there is no card with this username and password");return;
-    }
+
 }
