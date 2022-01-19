@@ -6,18 +6,18 @@ import java.util.Random;
 public class User {
     private String nationalCode;
     private String password;
-    private ArrayList<Account> accounts=new ArrayList<Account>();
-    public User(String nationalCode){
-        this.nationalCode=nationalCode;
-    }
-    public User(String nationalCode,String password){
+   private String branchName;
+
+
+    public User(String nationalCode,String password,String branchName){
         this.nationalCode=nationalCode;
         this.password=password;
+        this.branchName=branchName;
     }
-    public User(String nationalCode,String password,Account account) {
+    public User(String nationalCode,String password) {
         this.nationalCode = nationalCode;
         this.password=password;
-        accounts.add(account);
+
     }
     public User() {
     }
@@ -36,11 +36,11 @@ public class User {
         this.password = password;
     }
 
-    public ArrayList<Account> getAccounts() {
-        return accounts;
+    public String getBranchName() {
+        return branchName;
     }
 
-    public void setAccounts(ArrayList<Account> accounts) {
-        this.accounts = accounts;
+    public void setBranchName(String branchName) {
+        this.branchName = branchName;
     }
 }
