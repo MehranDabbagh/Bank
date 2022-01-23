@@ -1,3 +1,4 @@
+create table if not exists bank(branchName varchar(50) UNIQUE);
 create table if not exists manager(national_code varchar(50),jobtype varchar(50),branchName varchar(50) unique , CONSTRAINT fk_customer FOREIGN KEY(branchName) REFERENCES bank(branchName));
 create table if not exists noramlEmployee(national_code varchar(50),jobtype varchar (50),branchName varchar(50) not null);
 create table if not exists users(national_code varchar(50) unique not null ,password  varchar(50) not null ,branchName varchar(50) );

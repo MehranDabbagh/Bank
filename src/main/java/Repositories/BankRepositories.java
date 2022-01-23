@@ -7,7 +7,7 @@ import java.sql.*;
 public class BankRepositories {
     Connection connection=PostgresConnection.getInstance().getConnection();
     public BankRepositories() throws ClassNotFoundException, SQLException {
-        String sql="create table if not exists bank(branchName varchar(50) UNIQUE)";
+        String sql="";
 
         try {
             PreparedStatement preparedStatement=connection.prepareStatement(sql);

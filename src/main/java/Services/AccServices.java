@@ -23,22 +23,25 @@ public class AccServices  {
 
     public Account login(String AccId,String password){
        Account account= accRepositories.readById(AccId);
-       if(account==null){
-           System.out.println("acc not found!");
-           return null;
-       }else if(Objects.equals(account.getPassword(), password)){
-           System.out.println("welcome "+account.getUserNationalCode()+"!");
-           loggedInAcc=account;
+       if(account!=null) { if (Objects.equals(account.getPassword(), password) && account.getFoul()<3) {
+           System.out.println("welcome " + account.getUserNationalCode() + "!");
+           loggedInAcc = account;
            return loggedInAcc;
-       }else if(Objects.equals(account.getPassword(), "?")){
+       } else if (Objects.equals(account.getPassword(), "?")) {
            System.out.println("please initialize your password first!");
            return null;
-       } else {
-           loggedInAcc=account;
-           loggedInAcc.setFoul(loggedInAcc.getFoul()+1);
-           return loggedInAcc;
+       } else if( account.getFoul()>=3) {
+           System.out.println("your acc have been banned!");
+           return null;
+       }else{
+           loggedInAcc = account;
+           loggedInAcc.setFoul(loggedInAcc.getFoul() + 1);
+           System.out.println(loggedInAcc.getFoul());
+           accRepositories.update(loggedInAcc);
+           return null;
        }
-
+       }else    System.out.println("acc not found!");
+        return null;
     }
     public String create(User user,String password) {
         Account account=new Account(password,user.getNationalCode(),user.getBranchName());
