@@ -75,6 +75,7 @@ public class AccRepositories implements CRUD <Account> {
            if(resultSet.next()){
                  Account account=new Account(resultSet.getString("password"),resultSet.getString("userNational_Code"),resultSet.getString("branchName"),resultSet.getString("accId"));
                  account.setAmount(resultSet.getInt("amount"));
+                 account.setFoul(resultSet.getInt("foul"));
               return account;
            }
         } catch (SQLException e) {
