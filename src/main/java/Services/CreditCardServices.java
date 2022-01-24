@@ -20,7 +20,6 @@ public class CreditCardServices {
     }
 
     public void create(Account account) throws SQLException {
-
         List<CreditCard> creditCards=cardRepositories.readAll();
         boolean condition=true;
         for (CreditCard creditcard:creditCards
@@ -40,21 +39,31 @@ public class CreditCardServices {
     }
     public Boolean login(String cardId,String password) throws SQLException {
        CreditCard creditCard= cardRepositories.readById(cardId);
-       if( creditCard!=null && Objects.equals(creditCard.getPassword(), password)){
-           loggedIn=creditCard;
-           return true;
-       } else if(creditCard!=null){
-           creditCard.setFoul(creditCard.getFoul()+1);
-           cardRepositories.update(creditCard);
+       try {
+           if (Objects.equals(creditCard.getPassword(), password)) {
+               loggedIn = creditCard;
+               return true;
+           } else if (creditCard != null) {
+               creditCard.setFoul(creditCard.getFoul() + 1);
+               cardRepositories.update(creditCard);
 
-       } return false;
+           }
+           return false;
+       }catch (NullPointerException e){
+           return false;
+       }
     }
     public void read() throws SQLException {
             System.out.println("cardId "+loggedIn.getCardId()+" acc of the card: "+loggedIn.getAccId()+ " cvv2: "+loggedIn.getCvv2()+" expire date: "+loggedIn.getExpireDate()+" status: "+loggedIn.getStatus());
     }
     public void update(String password) throws SQLException{
-        CreditCard creditCard=cardRepositories.readById(loggedIn.getCardId());
-            creditCard.setPassword(password);cardRepositories.update(creditCard);
+        try {
+            CreditCard creditCard = cardRepositories.readById(loggedIn.getCardId());
+            creditCard.setPassword(password);
+            cardRepositories.update(creditCard);
+        }catch (NullPointerException e){
+
+        }
         }
     public void delete(Account account) throws SQLException {
         cardRepositories.delete(account.getAccId());
@@ -123,23 +132,31 @@ public class CreditCardServices {
 
     }
     public void transaction(Integer operator,Integer amount,Account account) throws SQLException {
-        Account loggedInAcc=accRepositories.readById(account.getAccId());
-
-        switch (operator){
-            case 0:{if(loggedInAcc.getAmount()>=amount){
-                loggedInAcc.setAmount(loggedInAcc.getAmount()-amount);
-                accRepositories.update(loggedInAcc);
-                Date date2=new Date();
-                Transaction transaction=new Transaction(TransactionType.WITHDREW,amount,loggedInAcc.getAccId(),date2);
-              transactionRepositories.create(transaction);
-            }else {System.out.println("there is no enough money for withdrew!");return;}
-            break;
+        Account loggedInAcc = accRepositories.readById(account.getAccId());
+        try {
+            switch (operator) {
+                case 0: {
+                    if (loggedInAcc.getAmount() >= amount) {
+                        loggedInAcc.setAmount(loggedInAcc.getAmount() - amount);
+                        accRepositories.update(loggedInAcc);
+                        Date date2 = new Date();
+                        Transaction transaction = new Transaction(TransactionType.WITHDREW, amount, loggedInAcc.getAccId(), date2);
+                        transactionRepositories.create(transaction);
+                    } else {
+                        System.out.println("there is no enough money for withdrew!");
+                        return;
+                    }
+                    break;
+                }
+                case 1:
+                    loggedInAcc.setAmount(loggedInAcc.getAmount() + amount);
+                    accRepositories.update(loggedInAcc);
+                    Date date2 = new Date();
+                    Transaction transaction = new Transaction(TransactionType.DEPOSIT, amount, loggedInAcc.getAccId(), date2);
+                    transactionRepositories.create(transaction);
             }
-            case 1:loggedInAcc.setAmount(loggedInAcc.getAmount()+amount);
-                accRepositories.update(loggedInAcc);
-                Date date2=new Date();
-                Transaction transaction=new Transaction(TransactionType.DEPOSIT,amount,loggedInAcc.getAccId(),date2);
-                transactionRepositories.create(transaction);
+        }catch (NullPointerException e){
+
         }
     }
     public void initialize(String cardId) throws SQLException {
