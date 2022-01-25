@@ -6,6 +6,7 @@ import Services.AdminService;
 import Services.CreditCardServices;
 import Services.UserServices;
 
+import java.math.BigInteger;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -190,7 +191,7 @@ if(operator>3 || operator<0){
         try {
             System.out.println("enter your national code");
             String nationalCode = input.next();
-            int a=Integer.valueOf(nationalCode);
+            long a=Long.valueOf(nationalCode);
             if (nationalCode.length() != 10) {
                 throw new NationalCodeException("invalid national code!");
             }

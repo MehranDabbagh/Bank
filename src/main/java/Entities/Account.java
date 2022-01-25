@@ -12,7 +12,11 @@ public class Account {
     private String userNationalCode;
 
     public Account(String password,String userNationalCode,String branchName){
-        this.accId = String.valueOf(Math.floor(Math.random()*(1000)+Math.pow(10,5))) ;
+        Random random=new Random();
+        this.accId="";
+        for(int i=0;i<10;i++){
+            this.accId=this.accId+String.valueOf(random.nextInt(9));
+        }
         this.status = Status.OPEN;
         this.password = password;
         this.amount = 10000;

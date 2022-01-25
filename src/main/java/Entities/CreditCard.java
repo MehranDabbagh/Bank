@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Random;
 
 public class CreditCard {
     private String cardId;
@@ -15,8 +16,16 @@ public class CreditCard {
   private String accId;
     private Integer foul;
     public CreditCard(String password,String accId) {
-        this.cardId = String.valueOf(Math.floor(Math.random()*(1000)+Math.pow(10,5))) ;
-        this.cvv2 = String.valueOf(Math.floor(Math.random()*(999)+Math.pow(10,3))) ;
+        Random random=new Random();
+        this.cardId="";
+        for(int i=0;i<10;i++){
+            this.cardId=this.cardId+String.valueOf(random.nextInt(9));
+        }
+
+        this.cardId="";
+        for(int i=0;i<4;i++){
+            this.cardId=this.cardId+String.valueOf(random.nextInt(9));
+        }
         this.password = password;
         Calendar now = Calendar.getInstance();
         now.add(Calendar.YEAR, 5);
