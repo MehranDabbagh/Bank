@@ -22,9 +22,9 @@ public class CreditCard {
             this.cardId=this.cardId+String.valueOf(random.nextInt(9));
         }
 
-        this.cardId="";
+        this.cvv2="";
         for(int i=0;i<4;i++){
-            this.cardId=this.cardId+String.valueOf(random.nextInt(9));
+            this.cvv2=this.cvv2+String.valueOf(random.nextInt(9));
         }
         this.password = password;
         Calendar now = Calendar.getInstance();

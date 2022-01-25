@@ -305,8 +305,8 @@ if(operator>3 || operator<0){
                                     System.out.println("please enter your card Id");
                                     String cardId = input.next();
                                     a=Long.valueOf(accId);
-                                    if(accId.length()!=8){
-                                        throw new AccIdException("invalid acc id!");
+                                    if(cardId.length()!=10){
+                                        throw new AccIdException("invalid card Id!");
                                     }
                                     creditCardServices.initialize(cardId);
 

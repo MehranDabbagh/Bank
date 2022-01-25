@@ -68,18 +68,14 @@ public class CardRepositories implements CRUD <CreditCard> {
           PreparedStatement preparedStatement=connection.prepareStatement(sql);
           preparedStatement.setString(1,id);
           ResultSet resultSet=preparedStatement.executeQuery();
-        System.out.println(id);
+
           if(resultSet.next()){
-              System.out.println("hello");
+
               java.util.Date newDate = new Date(resultSet.getDate("expireDate").getTime());
               CreditCard creditCard1=new CreditCard(resultSet.getString("cardId"),resultSet.getString("cvv2"),resultSet.getString("password"),newDate,Status.OPEN);
-              System.out.println(resultSet.getString("cardId"));
-              System.out.println(resultSet.getString("cvv2"));
-              System.out.println(resultSet.getString("password"));
-              System.out.println(resultSet.getString("status"));
 
               CreditCard creditCard=new CreditCard(resultSet.getString("cardId"),resultSet.getString("cvv2"),resultSet.getString("password"),newDate,Status.OPEN);
-                      System.out.println(creditCard1.getAccId());
+
               return creditCard;
           }
           return null;
