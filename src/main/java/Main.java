@@ -273,7 +273,7 @@ if(operator>3 || operator<0){
             System.out.println("please enter your acc Id");
             String accId=input.next();
             int a=Integer.valueOf(accId);
-            if(accId.length()!=8){
+            if(accId.length()!=10){
                 throw new AccIdException("invalid acc id!");
             }
             System.out.println("please enter your password");
@@ -381,13 +381,13 @@ if(operator>3 || operator<0){
                             System.out.println("please enter your card id ");
                             String senderCardId = input.next();
                             int a=Integer.valueOf(senderCardId);
-                            if(senderCardId.length()!=8){
+                            if(senderCardId.length()!=10){
                                 throw new CardIdException("invalid acc id!");
                             }
                             System.out.println("please enter your cvv2");
                             String cvv2 = input.next();
                             a=Integer.valueOf(cvv2);
-                            if(cvv2.length()!=6){
+                            if(cvv2.length()!=4){
                                 throw new Cvv2Exception("invalid cvv2 !");
                             }
                             System.out.println("please enter your password");
