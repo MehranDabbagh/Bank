@@ -215,7 +215,7 @@ if(operator>3 || operator<0){
         try {
             System.out.println("enter your national code");
             String nationalCode = input.next();
-            int a=Integer.valueOf(nationalCode);
+            Long a=Long.valueOf(nationalCode);
             if(nationalCode.length()!=10){
                 throw new NationalCodeException("invalid national code!");
             }
