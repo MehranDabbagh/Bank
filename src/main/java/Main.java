@@ -344,6 +344,9 @@ if(operator>3 || operator<0){
                             System.out.println(e.getMessage());
                         }catch (NumberFormatException e){
                             System.out.println("please enter a number!");
+                        }catch (InputMismatchException e){
+                            System.out.println("please enter a number!");
+                            input.nextLine();
                         }
                     }
                 }catch (NullPointerException e){
@@ -353,6 +356,7 @@ if(operator>3 || operator<0){
             System.out.println(e.getMessage());
         }catch (NumberFormatException e){
             System.out.println("please enter a number!");
+            input.nextLine();
         }
 
     }
@@ -395,7 +399,7 @@ if(operator>3 || operator<0){
                             System.out.println("please enter the expire date of your card(dd/mm/yyyy)");
                             String expireDate = input.next();
                             String[] expireDates=expireDate.split("/");
-                            if(expireDate.length()<10 || expireDate.length()>10 || Integer.valueOf(expireDates[0])>30 ||Integer.valueOf(expireDates[1])>12 || Integer.valueOf(expireDates[2])>2022 ){
+                            if(expireDate.length()<10 || expireDate.length()>10 || Integer.valueOf(expireDates[0])>30 ||Integer.valueOf(expireDates[1])>12 || Integer.valueOf(expireDates[2])>2028 ){
                                 throw new DateFormatException("invalid date type!");
                             }
                             Date date1 = new SimpleDateFormat("dd/MM/yyyy").parse(expireDate);
@@ -424,11 +428,13 @@ if(operator>3 || operator<0){
                     System.out.println(e.getMessage());
                 }catch (NumberFormatException e){
                     System.out.println("please enter a number!");
+                    input.nextLine();
                 }
             }catch (OutOfRangeException e){
                 System.out.println(e.getMessage());
             }catch (InputMismatchException e){
                 System.out.println("please enter a number!");
+                input.nextLine();
             }
         }
     }

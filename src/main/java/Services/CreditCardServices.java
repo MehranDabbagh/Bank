@@ -103,8 +103,8 @@ public class CreditCardServices {
             }
         }
 
-        if(SenderCardId.length()==8 && receiverCardId.length()==8 ){
-            if(cvv2.length()==6){
+        if(SenderCardId.length()==10 && receiverCardId.length()==10 ){
+            if(cvv2.length()==4){
 
             if(senderAcc.getAmount()>amount+600){
                 Date date2=new Date();
