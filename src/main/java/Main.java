@@ -272,7 +272,7 @@ if(operator>3 || operator<0){
         try {
             System.out.println("please enter your acc Id");
             String accId=input.next();
-            int a=Integer.valueOf(accId);
+            Long a=Long.valueOf(accId);
             if(accId.length()!=10){
                 throw new AccIdException("invalid acc id!");
             }
@@ -304,7 +304,7 @@ if(operator>3 || operator<0){
                                 case 3:
                                     System.out.println("please enter your card Id");
                                     String cardId = input.next();
-                                    a=Integer.valueOf(accId);
+                                    a=Long.valueOf(accId);
                                     if(accId.length()!=8){
                                         throw new AccIdException("invalid acc id!");
                                     }
@@ -325,7 +325,7 @@ if(operator>3 || operator<0){
                                     Date date1 = new SimpleDateFormat("dd/MM/yyyy").parse(date);
                                     System.out.println("please enter the acc id");
                                     String accId1 = input.next();
-                                    a=Integer.valueOf(accId1);
+                                    a=Long.valueOf(accId1);
                                     if(accId1.length()!=10){
                                         throw new AccIdException("invalid acc id!");
                                     }
@@ -380,13 +380,13 @@ if(operator>3 || operator<0){
                         case 2:
                             System.out.println("please enter your card id ");
                             String senderCardId = input.next();
-                            int a=Integer.valueOf(senderCardId);
+                            Long a=Long.valueOf(senderCardId);
                             if(senderCardId.length()!=10){
                                 throw new CardIdException("invalid acc id!");
                             }
                             System.out.println("please enter your cvv2");
                             String cvv2 = input.next();
-                            a=Integer.valueOf(cvv2);
+                            a=Long.valueOf(cvv2);
                             if(cvv2.length()!=4){
                                 throw new Cvv2Exception("invalid cvv2 !");
                             }
@@ -403,7 +403,7 @@ if(operator>3 || operator<0){
                             int amount2 = input.nextInt();
                             System.out.println("please enter the card id you want to send money");
                             String receiverCardId = input.next();
-                            a=Integer.valueOf(receiverCardId);
+                            a=Long.valueOf(receiverCardId);
                             if(receiverCardId.length()!=10){
                                 throw new CardIdException("invalid card id!");
                             }
