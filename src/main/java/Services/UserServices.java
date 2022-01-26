@@ -12,8 +12,7 @@ public class UserServices {
     private User loggedIn;
     private AccServices accServices=new AccServices();
 
-    public UserServices() throws SQLException, ClassNotFoundException {
-    }
+
 
     public boolean login(String nationalCode,String password){
         try {

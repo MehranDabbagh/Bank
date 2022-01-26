@@ -15,56 +15,12 @@ import java.util.InputMismatchException;
 import java.util.Objects;
 import java.util.Scanner;
 
-public class Main {
+public class Main<accServices> {
     static Scanner input=new Scanner(System.in);
-     static AccServices accServices;
-
-    static {
-        try {
-            accServices = new AccServices();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
-
-    static UserServices userServices;
-
-    static {
-        try {
-            userServices = new UserServices();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
-
-    static AdminService adminService;
-
-    static {
-        try {
-            adminService = new AdminService();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
-
-    static CreditCardServices creditCardServices;
-
-    static {
-        try {
-            creditCardServices = new CreditCardServices();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
-
+     static AccServices accServices= new AccServices();;
+    static UserServices userServices =new UserServices();
+    static AdminService adminService= new AdminService();
+    static CreditCardServices creditCardServices= new CreditCardServices();
     public static void main(String[] args) throws SQLException, ParseException, ClassNotFoundException {
         boolean condition=true;
         while(condition){
