@@ -8,18 +8,7 @@ import java.sql.*;
 
 public class ManagerRepositories {
     Connection connection=PostgresConnection.getInstance().getConnection();
-    public ManagerRepositories() throws ClassNotFoundException, SQLException {
-        String sql="create table if not exists manager(national_code varchar(50),jobtype varchar(50),branchName varchar(50) unique ,\n" +
-                "                                          CONSTRAINT fk_customer\n" +
-                "                                              FOREIGN KEY(branchName) REFERENCES bank(branchName))";
 
-        try {
-            PreparedStatement preparedStatement=connection.prepareStatement(sql);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-    }
     public void create(String national_code,String branchName){
         String sqlCodeTest="select * from manager where national_code=? ";
         String sqlBranchTest="select * from manager where branchName=?";
@@ -43,6 +32,8 @@ public class ManagerRepositories {
             preparedStatement.setString(3, branchName);
             preparedStatement.execute();}}
         } catch (SQLException e) {
+            e.printStackTrace();
+        }catch (NullPointerException e){
             e.printStackTrace();
         }
     }

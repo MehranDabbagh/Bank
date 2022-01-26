@@ -11,8 +11,6 @@ public class AdminService {
     private ManagerRepositories managerRepositories=new ManagerRepositories();
     private NormalEmployeeRepositories normalEmployeeRepositories=new NormalEmployeeRepositories();
 
-    public AdminService() throws SQLException, ClassNotFoundException {
-    }
 
     public void createBranch(String branchName){
            bankRepositories.create(branchName);

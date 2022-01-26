@@ -6,16 +6,7 @@ import java.sql.*;
 
 public class BankRepositories {
     Connection connection=PostgresConnection.getInstance().getConnection();
-    public BankRepositories() throws ClassNotFoundException, SQLException {
-        String sql="";
 
-        try {
-            PreparedStatement preparedStatement=connection.prepareStatement(sql);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-    }
     public void create(String branchName){
         String sqlTest="select * from bank where branchName=? ";
         String sql="insert into bank (branchName) values (?)";
@@ -30,6 +21,8 @@ public class BankRepositories {
             preparedStatement.setString(1,branchName);
             preparedStatement.execute();}
         } catch (SQLException e) {
+            e.printStackTrace();
+        }catch (NullPointerException e){
             e.printStackTrace();
         }
     }

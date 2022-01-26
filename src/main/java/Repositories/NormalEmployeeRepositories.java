@@ -7,19 +7,7 @@ import java.sql.*;
 
 public class NormalEmployeeRepositories {
     Connection connection=PostgresConnection.getInstance().getConnection();
-    public NormalEmployeeRepositories() throws ClassNotFoundException, SQLException {
-        String sql="create table if not exists noramlEmployee(national_code varchar(50),jobtype varchar (50),manager varchar(50) not null ,\n" +
-                "    CONSTRAINT fk_customer\n" +
-                "    FOREIGN KEY(manager) REFERENCES bank(manager))";
 
-
-        try {
-            PreparedStatement preparedStatement=connection.prepareStatement(sql);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-    }
     public void create(String national_code, String branchName){
         String sql2="select * from manager where branchName=? ";
         String sql="insert into noramlEmployee (national_code,jobtype,branchName) values (?,?,?)";
@@ -42,6 +30,8 @@ public class NormalEmployeeRepositories {
         preparedStatement.execute();}
          }
         } catch (SQLException e) {
+            e.printStackTrace();
+        }catch (NullPointerException e){
             e.printStackTrace();
         }
     }

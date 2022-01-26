@@ -8,16 +8,7 @@ import java.sql.*;
 
 public class UserRepositories {
     Connection connection=PostgresConnection.getInstance().getConnection();
-    public UserRepositories() throws ClassNotFoundException, SQLException {
-        String sql="create table if not exists users(national_code varchar(50) unique not null ,password  varchar(50) not null ,branchName )";
 
-        try {
-            PreparedStatement preparedStatement=connection.prepareStatement(sql);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-    }
     public void createUser(String nationalCode,String password,String branchName){
         String sqlBranchTest="select from bank where branchName=?";
          String sql="insert into users(national_code,password,branchName ) values (?,?,?)";
@@ -40,6 +31,8 @@ public class UserRepositories {
             preparedStatement.execute();}else System.out.println("there is no branch with this  name");}
         } catch (SQLException e) {
             e.printStackTrace();
+        }catch (NullPointerException e){
+            e.printStackTrace();
         }
     }
     public User read(String nationalCode, String password){
@@ -55,6 +48,8 @@ public class UserRepositories {
                return user;
             }
         } catch (SQLException e) {
+            e.printStackTrace();
+        }catch (NullPointerException e){
             e.printStackTrace();
         }
         return null;

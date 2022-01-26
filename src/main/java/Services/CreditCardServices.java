@@ -16,28 +16,30 @@ public class CreditCardServices {
     private AccRepositories accRepositories=new AccRepositories();
     private TransactionRepositories transactionRepositories=new TransactionRepositories();
 
-    public CreditCardServices() throws SQLException, ClassNotFoundException {
-    }
 
-    public void create(Account account) throws SQLException {
-        List<CreditCard> creditCards=cardRepositories.readAll();
-        boolean condition=true;
-        for (CreditCard creditcard:creditCards
-             ) {
-            if(Objects.equals(creditcard.getAccId(), account.getAccId())){
-                condition=false;
+    public void create(Account account) {
+    try {
+        List<CreditCard> creditCards = cardRepositories.readAll();
+        boolean condition = true;
+        for (CreditCard creditcard : creditCards
+        ) {
+            if (Objects.equals(creditcard.getAccId(), account.getAccId())) {
+                condition = false;
             }
         }
 
-        if(!condition){
+        if (!condition) {
             System.out.println("this account already have a credit card!");
             return;
-        }else {
-            CreditCard creditCard=new CreditCard("?",account.getAccId());
+        } else {
+            CreditCard creditCard = new CreditCard("?", account.getAccId());
             cardRepositories.create(creditCard);
         }
+    }catch (NullPointerException e){
+            e.printStackTrace();
     }
-    public Boolean login(String cardId,String password) throws SQLException {
+    }
+    public Boolean login(String cardId,String password)  {
        CreditCard creditCard= cardRepositories.readById(cardId);
        try {
            if (Objects.equals(creditCard.getPassword(), password)) {
@@ -53,10 +55,10 @@ public class CreditCardServices {
            return false;
        }
     }
-    public void read() throws SQLException {
+    public void read()  {
             System.out.println("cardId "+loggedIn.getCardId()+" acc of the card: "+loggedIn.getAccId()+ " cvv2: "+loggedIn.getCvv2()+" expire date: "+loggedIn.getExpireDate()+" status: "+loggedIn.getStatus());
     }
-    public void update(String password) throws SQLException{
+    public void update(String password) {
         try {
             CreditCard creditCard = cardRepositories.readById(loggedIn.getCardId());
             creditCard.setPassword(password);
@@ -65,73 +67,81 @@ public class CreditCardServices {
 
         }
         }
-    public void delete(Account account) throws SQLException {
+    public void delete(Account account)  {
         cardRepositories.delete(account.getAccId());
         loggedIn=null;
     }
-    public void transfer(String SenderCardId,String receiverCardId,String cvv2,String password,Date expireDate,Integer amount) throws SQLException{
+    public void transfer(String SenderCardId,String receiverCardId,String cvv2,String password,Date expireDate,Integer amount){
       List<CreditCard>  creditCards=cardRepositories.readAll();
       CreditCard senderCard =creditCards.get(0);
       CreditCard receiverCard=creditCards.get(0);
-        for (CreditCard creditCard1:creditCards
-             ) {
-            if(Objects.equals(creditCard1.getCardId(), SenderCardId)){
-                senderCard =creditCard1;
-            }
-        }
-        for (CreditCard creditCard2:creditCards
-        ) {
-            if(Objects.equals(creditCard2.getCardId(), receiverCardId)){
-                receiverCard=creditCard2;
-            }
-        }
-        List<Account> accounts=accRepositories.readAll();
-        Account senderAcc =accounts.get(0);
-        for (Account account2:accounts
-        ) {
+      try {
+          for (CreditCard creditCard1 : creditCards
+          ) {
+              if (Objects.equals(creditCard1.getCardId(), SenderCardId)) {
+                  senderCard = creditCard1;
+              }
+          }
+          for (CreditCard creditCard2 : creditCards
+          ) {
+              if (Objects.equals(creditCard2.getCardId(), receiverCardId)) {
+                  receiverCard = creditCard2;
+              }
+          }
+          List<Account> accounts = accRepositories.readAll();
+          Account senderAcc = accounts.get(0);
+          for (Account account2 : accounts
+          ) {
 
-            if(Objects.equals(account2.getAccId(), senderCard.getAccId())){
+              if (Objects.equals(account2.getAccId(), senderCard.getAccId())) {
 
-                senderAcc =account2;
-            }
-        }
-        Account receiverAcc =accounts.get(0);
-        for (Account account3:accounts
-        ) {
-            if(Objects.equals(account3.getAccId(), receiverCard.getAccId())){
-                receiverAcc =account3;
-            }
-        }
+                  senderAcc = account2;
+              }
+          }
+          Account receiverAcc = accounts.get(0);
+          for (Account account3 : accounts
+          ) {
+              if (Objects.equals(account3.getAccId(), receiverCard.getAccId())) {
+                  receiverAcc = account3;
+              }
+          }
 
-        if(SenderCardId.length()==10 && receiverCardId.length()==10 ){
-            if(cvv2.length()==4){
+          if (SenderCardId.length() == 10 && receiverCardId.length() == 10) {
+              if (cvv2.length() == 4) {
 
-            if(senderAcc.getAmount()>amount+600){
-                Date date2=new Date();
-                Calendar cal = Calendar.getInstance();
-                cal.setTime(senderCard.getExpireDate());
-                Calendar cal1 = Calendar.getInstance();
-                cal1.setTime(date2);
-                if(cal1.compareTo(cal)<0){
+                  if (senderAcc.getAmount() > amount + 600) {
+                      Date date2 = new Date();
+                      Calendar cal = Calendar.getInstance();
+                      cal.setTime(senderCard.getExpireDate());
+                      Calendar cal1 = Calendar.getInstance();
+                      cal1.setTime(date2);
+                      if (cal1.compareTo(cal) < 0 || expireDate == senderCard.getExpireDate()) {
 
-                    Transfer transfer=new Transfer(senderCard.getCardId(), receiverCard.getCardId() ,amount,date2);
-                    transferRepositories.create(transfer);
-                    senderAcc.setAmount( senderAcc.getAmount()-(amount+600));
-                   receiverAcc.setAmount( receiverAcc.getAmount()+amount);
-                    if(Objects.equals(senderCard.getCardId(), SenderCardId) && Objects.equals(senderCard.getPassword(), password)  && Objects.equals(senderCard.getCvv2(), cvv2)) {
-                        accRepositories.update(senderAcc);
-                        accRepositories.update(receiverAcc);
-                    }else System.out.println("wrong details!");
+                          Transfer transfer = new Transfer(senderCard.getCardId(), receiverCard.getCardId(), amount, date2);
+                          transferRepositories.create(transfer);
+                          senderAcc.setAmount(senderAcc.getAmount() - (amount + 600));
+                          receiverAcc.setAmount(receiverAcc.getAmount() + amount);
+                          if (Objects.equals(senderCard.getCardId(), SenderCardId) && Objects.equals(senderCard.getPassword(), password) && Objects.equals(senderCard.getCvv2(), cvv2)) {
+                              accRepositories.update(senderAcc);
+                              accRepositories.update(receiverAcc);
+                          } else System.out.println("wrong details!");
 
+                          return;
+                      } else {
+                          System.out.println("your card is not valid anymore!");
+                          return;
+                      }
+                  } else {
+                      System.out.println("you don't have enough money for this operation!");
                       return;
-                }else {System.out.println("your card is not valid anymore!");return;}
-            }else {System.out.println("you don't have enough money for this operation!");
-            return;}
-        }else System.out.println("receiver creditCard is not valid!");
-        }else System.out.println("receiver creditCard is not valid!");
-
+                  }
+              } else System.out.println("receiver creditCard is not valid!");
+          } else System.out.println("receiver creditCard is not valid!");
+      }catch (NullPointerException e){
+          e.printStackTrace();
+      }
     }
-    public void transaction(Integer operator,Integer amount,Account account) throws SQLException {
+    public void transaction(Integer operator,Integer amount,Account account)  {
         Account loggedInAcc = accRepositories.readById(account.getAccId());
         try {
             switch (operator) {
@@ -159,29 +169,35 @@ public class CreditCardServices {
 
         }
     }
-    public void initialize(String cardId) throws SQLException {
-       List<CreditCard> creditCards= cardRepositories.readAll();
-       CreditCard currentCard = creditCards.get(0);
-       Scanner input=new Scanner(System.in);
-        for (CreditCard creditcard:creditCards
-             ) {
-           if(Objects.equals(creditcard.getCardId(), cardId)){
-               if(Objects.equals(creditcard.getPassword(), "?")){
-                   System.out.println("please initialize your password");
-                   String password=input.next();
-                   loggedIn=creditcard;
-                   update(password);
-               }else {  System.out.println("please enter your old password");;
-                   String password=input.next();
-                   if(Objects.equals(creditcard.getPassword(), password)){
-                       System.out.println("please enter your new  password");;
-                       password=input.next();
-                     loggedIn=creditcard;
-                     update(password);
-                   }else System.out.println("wrong!");
-               }
-           }
+    public void initialize(String cardId) {
+        try {
+            List<CreditCard> creditCards = cardRepositories.readAll();
+            Scanner input = new Scanner(System.in);
+            for (CreditCard creditcard : creditCards
+            ) {
+                if (Objects.equals(creditcard.getCardId(), cardId)) {
+                    if (Objects.equals(creditcard.getPassword(), "?")) {
+                        System.out.println("please initialize your password");
+                        String password = input.next();
+                        loggedIn = creditcard;
+                        update(password);
+                    } else {
+                        System.out.println("please enter your old password");
+                        ;
+                        String password = input.next();
+                        if (Objects.equals(creditcard.getPassword(), password)) {
+                            System.out.println("please enter your new  password");
+                            ;
+                            password = input.next();
+                            loggedIn = creditcard;
+                            update(password);
+                        } else System.out.println("wrong!");
+                    }
+                }
 
+            }
+        }catch (NullPointerException e){
+            e.printStackTrace();
         }
     }
 

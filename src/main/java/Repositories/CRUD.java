@@ -6,10 +6,10 @@ import java.sql.SQLException;
 import java.util.List;
 
 public interface CRUD<T> {
-    String create(T t) throws SQLException;
-    T readById(String id) throws SQLException;
-    List<T> readAll() throws SQLException;
-    Integer update(T t) throws SQLException;
-    Integer delete(String id) throws SQLException;
+    String create(T t) ;
+    T readById(String id) ;
+    List<T> readAll() ;
+    Integer update(T t) ;
+    Integer delete(String id) ;
 
 }

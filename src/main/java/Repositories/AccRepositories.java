@@ -13,21 +13,7 @@ import java.util.List;
 
 public class AccRepositories implements CRUD <Account> {
     Connection connection=PostgresConnection.getInstance().getConnection();
-    public AccRepositories() throws ClassNotFoundException, SQLException {
-        String sql="create table if not exists accs(accId varchar(50) primary key,Status acc_status not null,password varchar(50) not null,\n" +
-                "    amount integer not null ,\n" +
-                "    branchName varchar(50) not null,foul INTEGER ,\n" +
-                "    userNational_Code VARCHAR (50) not null,\n" +
-                "    CONSTRAINT fk_customer\n" +
-                "    FOREIGN KEY(userNational_Code) REFERENCES users(national_code) )";
 
-        try {
-            PreparedStatement preparedStatement=connection.prepareStatement(sql);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-    }
 
     @Override
     public String create(Account account) {
@@ -61,6 +47,8 @@ public class AccRepositories implements CRUD <Account> {
             }else System.out.println("there is no branch with this name!");
         } catch (SQLException e) {
             e.printStackTrace();
+        }catch (NullPointerException e){
+            e.printStackTrace();
         }
        return "undefined!";
     }
@@ -79,6 +67,8 @@ public class AccRepositories implements CRUD <Account> {
               return account;
            }
         } catch (SQLException e) {
+            e.printStackTrace();
+        }catch (NullPointerException e){
             e.printStackTrace();
         }
 return null;
@@ -101,6 +91,8 @@ return null;
                 return finalACcs;
             }
         } catch (SQLException e) {
+            e.printStackTrace();
+        }catch (NullPointerException e){
             e.printStackTrace();
         }
         return null;
@@ -129,6 +121,8 @@ preparedStatement.execute();
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        }catch (NullPointerException e){
+            e.printStackTrace();
         }
         return -1;
     }
@@ -141,6 +135,8 @@ String sql ="delete from accs where accId=?";
             preparedStatement.setString(1,id);
           return   preparedStatement.executeUpdate();
         } catch (SQLException e) {
+            e.printStackTrace();
+        }catch (NullPointerException e){
             e.printStackTrace();
         }
 

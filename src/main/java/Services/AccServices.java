@@ -18,8 +18,7 @@ public class AccServices  {
     private TransactionRepositories transactionRepositories=new TransactionRepositories();
     private CardRepositories cardRepositories=new CardRepositories();
 
-    public AccServices() throws SQLException, ClassNotFoundException {
-    }
+
 
     public Account login(String AccId,String password){
        Account account= accRepositories.readById(AccId);
@@ -81,7 +80,7 @@ public class AccServices  {
 
        }
     }
-     public void showingTransactionAndTransfersSinceNow(Date date,String accId) throws SQLException{
+     public void showingTransactionAndTransfersSinceNow(Date date,String accId) {
         try {
             java.sql.Date date1 = new java.sql.Date(date.getTime());
             Date date2 = new Date();

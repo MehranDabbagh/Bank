@@ -16,18 +16,27 @@ public class UserServices {
     }
 
     public boolean login(String nationalCode,String password){
-      User  user= userRepositories.read(nationalCode,password);
-       if(user!=null){
-           loggedIn=user;
-           return true;
-       }else System.out.println("there is no user with this national code or the password is wrong!");
-       return false;
+        try {
+            User  user= userRepositories.read(nationalCode,password);
+            if(user!=null){
+                loggedIn=user;
+                return true;
+            }else System.out.println("there is no user with this national code or the password is wrong!");
+            return false;
+        }catch (NullPointerException e){
+            e.printStackTrace();
+        }
+     return false;
 
     }
     public void create(String nationalCode,String password,String accPassword,String branchName){
-        userRepositories.createUser(nationalCode,password,branchName);
-        User user=new User(nationalCode,password,branchName);
-        accServices.create(user,accPassword);
+        try {
+            userRepositories.createUser(nationalCode, password, branchName);
+            User user = new User(nationalCode, password, branchName);
+            accServices.create(user, accPassword);
+        }catch (NullPointerException e){
+            e.printStackTrace();
+        }
     }
 
 }
