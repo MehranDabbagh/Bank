@@ -54,14 +54,20 @@ public class TransferRepositories implements CRUD<Transfer,String> {
                 preparedStatement = connection.prepareStatement(sql1);
                 preparedStatement.setString(1, resultSet.getString("senderId"));
                 ResultSet resultSet1 = preparedStatement.executeQuery();
-                Account account1=new Account();
+                Account account1=new Account(resultSet1.getString("accid"),
+                        Status.valueOf(resultSet1.getString("status")),resultSet1.getString("password"),
+                        resultSet1.getInt("amount"),resultSet1.getString("branchname"),
+                        resultSet1.getInt("foul"),resultSet1.getString("userNationalCode"));
                 CreditCard creditCard1 = new CreditCard(resultSet1.getString("(creditcard).password"), account1.getAccId());
                 java.util.Date newDate = new Date(resultSet.getDate("date").getTime());
                 String sql2 = "select * from accs inner join users inner join creditCard where accId=?";
                 preparedStatement = connection.prepareStatement(sql2);
                 preparedStatement.setString(1, resultSet.getString("reciverId"));
                 ResultSet resultSet2 = preparedStatement.executeQuery();
-                Account account2=new Account();                CreditCard creditCard2 = new CreditCard(resultSet2.getString("(creditcard).password"), account2.getAccId());
+                Account account2=new Account(resultSet2.getString("accid"),
+                        Status.valueOf(resultSet2.getString("status")),resultSet2.getString("password"),
+                        resultSet2.getInt("amount"),resultSet2.getString("branchname"),
+                        resultSet2.getInt("foul"),resultSet2.getString("userNationalCode"));               CreditCard creditCard2 = new CreditCard(resultSet2.getString("(creditcard).password"), account2.getAccId());
                 java.util.Date date1 = new Date(resultSet.getDate("date").getTime());
                 Transfer transfer = new Transfer(creditCard1.getCardId(), creditCard2.getCardId(), resultSet.getInt("amount"), date1);
                 return transfer;

@@ -49,7 +49,10 @@ public class TransactionRepositories implements CRUD<Transaction,String> {
         preparedStatement.setString(1,id);
         ResultSet resultSet=preparedStatement.executeQuery();
         if(resultSet.next()){
-            Account account=new Account();
+            Account account = new Account(resultSet.getString("accid"),
+                    Status.valueOf(resultSet.getString("status")), resultSet.getString("password"),
+                    resultSet.getInt("amount"), resultSet.getString("branchname"),
+                    resultSet.getInt("foul"), resultSet.getString("userNationalCode"));
             java.util.Date newDate = new Date(resultSet.getDate("date").getTime());
             TransactionType transactionType;
             if(Objects.equals(resultSet.getString(2), "WITHDREW")){
@@ -83,19 +86,23 @@ public class TransactionRepositories implements CRUD<Transaction,String> {
                 PreparedStatement preparedStatement1 = connection.prepareStatement(sql1);
                 preparedStatement1.setString(1, resultSet.getString("transactionid"));
                 ResultSet resultSet1 = preparedStatement1.executeQuery();
-                resultSet1.next();
-                Account account=new Account();
-                java.util.Date newDate = new Date(resultSet.getDate("transactiondate").getTime());
-                TransactionType transactionType;
-                if (Objects.equals(resultSet.getString("transactiontype"), "WITHDREW")) {
-                    transactionType = TransactionType.WITHDREW;
-                } else if (Objects.equals(resultSet.getString("transactiontype"), "DEPOSIT")) {
-                    transactionType = TransactionType.DEPOSIT;
-                } else if (Objects.equals(resultSet.getString("transactiontype"), "TRANSFER")) {
-                    transactionType = TransactionType.TRANSFER;
-                } else transactionType = TransactionType.DEPOSIT;
-                Transaction transaction = new Transaction(resultSet.getString("transactionid"), transactionType, resultSet1.getInt("amount"), resultSet.getString("accid"), newDate);
-                transactions.add(transaction);
+                if (resultSet1.next()) {
+                    Account account1 = new Account(resultSet1.getString("accid"),
+                            Status.valueOf(resultSet1.getString("status")), resultSet1.getString("password"),
+                            resultSet1.getInt("amount"), resultSet1.getString("branchname"),
+                            resultSet1.getInt("foul"), resultSet1.getString("userNationalCode"));
+                    java.util.Date newDate = new Date(resultSet.getDate("transactiondate").getTime());
+                    TransactionType transactionType;
+                    if (Objects.equals(resultSet.getString("transactiontype"), "WITHDREW")) {
+                        transactionType = TransactionType.WITHDREW;
+                    } else if (Objects.equals(resultSet.getString("transactiontype"), "DEPOSIT")) {
+                        transactionType = TransactionType.DEPOSIT;
+                    } else if (Objects.equals(resultSet.getString("transactiontype"), "TRANSFER")) {
+                        transactionType = TransactionType.TRANSFER;
+                    } else transactionType = TransactionType.DEPOSIT;
+                    Transaction transaction = new Transaction(resultSet.getString("transactionid"), transactionType, resultSet1.getInt("amount"), resultSet.getString("accid"), newDate);
+                    transactions.add(transaction);
+                }
             }
             if (transactions.size() > 0) {
                 return transactions;
