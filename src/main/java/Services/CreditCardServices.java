@@ -142,7 +142,7 @@ public class CreditCardServices {
       }
     }
     public void transaction(Integer operator,Integer amount,Account account)  {
-        Account loggedInAcc = accRepositories.readById(account.getID());
+        Account loggedInAcc = accRepositories.readById(account.getAccId());
         try {
             switch (operator) {
                 case 0: {

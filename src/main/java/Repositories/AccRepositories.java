@@ -5,8 +5,13 @@ package Repositories;
 import Entities.Account;
 import MyConnection.SessionFactorySingleton;
 import lombok.var;
+import org.hibernate.ScrollableResults;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.SharedSessionContract;
+import org.hibernate.query.Query;
+import org.hibernate.search.sandbox.standalone.FullTextQuery;
+
 
 import java.util.List;
 
@@ -38,21 +43,11 @@ public class AccRepositories implements CRUD <Account,String> {
 
     @Override
     public List<Account> readAll() {
-        try{
-            List<Account> accounts;
-            SharedSessionContract session = null;
-            org.hibernate.Transaction tx = session.beginTransaction();
-            accounts = session.createSQLQuery("SELECT * FROM accs").list();
-            if(accounts.size() > 0)
-            {
-                return accounts;
-            }
-            return null;
-        }
-        catch(Exception e)
-        {
-            throw e;
-        }
+        Session session = sessionFactory.openSession();
+        Query q = session.createQuery("from Account ");
+        List<Account> accounts = (List<Account>) q.getResultList();
+
+return accounts;
     }
 
     @Override
