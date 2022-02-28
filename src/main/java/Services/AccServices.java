@@ -21,7 +21,7 @@ public class AccServices  {
 
 
     public Account login(String AccId,String password){
-       Account account= accRepositories.readById(AccId);
+       Account account= accRepositories.readById(Long.valueOf(AccId));
        try{ if (Objects.equals(account.getPassword(), password) && account.getFoul()<3) {
            System.out.println("welcome " + account.getUserNationalCode() + "!");
            loggedInAcc = account;
@@ -45,17 +45,17 @@ public class AccServices  {
         return null;
     }
     public String create(User user,String password) {
-        Account account=new Account(password,user.getNationalCode(),user.getBranchName());
-        String accId=accRepositories.create(account);
+        Account account=new Account();
+        String accId=String.valueOf(accRepositories.create(account));
         return accId;
     }
     public void read() {
-       Account account= accRepositories.readById(loggedInAcc.getAccId());
+       Account account= accRepositories.readById(Long.valueOf(loggedInAcc.getAccId()));
        System.out.println("acc id: "+account.getAccId()+" amount: "+account.getAmount()+ " branch: "+account.getBranchName()+" owner: "+account.getUserNationalCode());
        }
     public void update(String password) {
         try {
-            Account test = accRepositories.readById(loggedInAcc.getAccId());
+            Account test = accRepositories.readById(Long.valueOf(loggedInAcc.getAccId()));
                 test.setPassword(password);
                 accRepositories.update(test);
         }catch (NullPointerException e){
@@ -63,7 +63,7 @@ public class AccServices  {
         }
     }
     public void delete() {
-       accRepositories.delete(loggedInAcc.getAccId());
+       accRepositories.delete(loggedInAcc);
        loggedInAcc=null;
     }
     public void showingUserAccounts(String nationalCode){

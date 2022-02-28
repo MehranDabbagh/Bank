@@ -1,3 +1,5 @@
+package MyConnection;
+
 import Entities.Account;
 import lombok.var;
 import org.hibernate.SessionFactory;

@@ -9,7 +9,7 @@ public interface CRUD<T,I> {
     I create(T t) ;
     T readById(I id) ;
     List<T> readAll() ;
-    Integer update(T t) ;
-    Integer delete(I id) ;
+    void update(T t) ;
+    void delete(T t) ;
 
 }

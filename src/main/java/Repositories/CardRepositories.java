@@ -107,7 +107,7 @@ try {
     }
 
     @Override
-    public Integer update(CreditCard creditCard) {
+    public void update(CreditCard creditCard) {
 
         String sql="select * from creditCard where cardId=?";
         try {
@@ -123,31 +123,31 @@ try {
                 preparedStatement.setInt(3,creditCard.getFoul());
                 preparedStatement.setString(4,creditCard.getCardId());
                 preparedStatement.execute();
-                return preparedStatement.executeUpdate();
+
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }catch (NullPointerException e){
             e.printStackTrace();
         }
-        return -1;
+
 
     }
 
     @Override
-    public Integer delete(String id) {
+    public void delete(CreditCard creditCard) {
         String sql ="delete from creditCard where accid=?";
         try {
             PreparedStatement preparedStatement=connection.prepareStatement(sql);
-            preparedStatement.setString(1,id);
-            return   preparedStatement.executeUpdate();
+            preparedStatement.setString(1,creditCard.getCardId());
+            preparedStatement.execute();
         } catch (SQLException e) {
             e.printStackTrace();
         }catch (NullPointerException e){
             e.printStackTrace();
         }
 
-        return null;
+
 
     }
 }

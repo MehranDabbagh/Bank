@@ -49,7 +49,7 @@ public class TransactionRepositories implements CRUD<Transaction,String> {
         preparedStatement.setString(1,id);
         ResultSet resultSet=preparedStatement.executeQuery();
         if(resultSet.next()){
-            Account account=new Account(resultSet.getString("password"),resultSet.getString("national_code"),resultSet.getString("branchName"));
+            Account account=new Account();
             java.util.Date newDate = new Date(resultSet.getDate("date").getTime());
             TransactionType transactionType;
             if(Objects.equals(resultSet.getString(2), "WITHDREW")){
@@ -84,7 +84,7 @@ public class TransactionRepositories implements CRUD<Transaction,String> {
                 preparedStatement1.setString(1, resultSet.getString("transactionid"));
                 ResultSet resultSet1 = preparedStatement1.executeQuery();
                 resultSet1.next();
-                Account account = new Account(resultSet.getString("password"), resultSet.getString("national_code"), resultSet.getString("branchName"));
+                Account account=new Account();
                 java.util.Date newDate = new Date(resultSet.getDate("transactiondate").getTime());
                 TransactionType transactionType;
                 if (Objects.equals(resultSet.getString("transactiontype"), "WITHDREW")) {
@@ -110,12 +110,12 @@ public class TransactionRepositories implements CRUD<Transaction,String> {
     }
 
     @Override
-    public Integer update(Transaction transaction) {
-        return null;
+    public void update(Transaction transaction) {
+
     }
 
     @Override
-    public Integer delete(String id)  {
-        return null;
+    public void delete(Transaction transaction)  {
+
     }
 }

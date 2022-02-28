@@ -54,16 +54,14 @@ public class TransferRepositories implements CRUD<Transfer,String> {
                 preparedStatement = connection.prepareStatement(sql1);
                 preparedStatement.setString(1, resultSet.getString("senderId"));
                 ResultSet resultSet1 = preparedStatement.executeQuery();
-                Account account1 = new Account(resultSet1.getString("password"), resultSet1.getString("national_code"), resultSet1.getString("branchName"));
-
+                Account account1=new Account();
                 CreditCard creditCard1 = new CreditCard(resultSet1.getString("(creditcard).password"), account1.getAccId());
                 java.util.Date newDate = new Date(resultSet.getDate("date").getTime());
                 String sql2 = "select * from accs inner join users inner join creditCard where accId=?";
                 preparedStatement = connection.prepareStatement(sql2);
                 preparedStatement.setString(1, resultSet.getString("reciverId"));
                 ResultSet resultSet2 = preparedStatement.executeQuery();
-                Account account2 = new Account(resultSet2.getString("password"), resultSet2.getString("national_code"), resultSet2.getString("branchName"));
-                CreditCard creditCard2 = new CreditCard(resultSet2.getString("(creditcard).password"), account2.getAccId());
+                Account account2=new Account();                CreditCard creditCard2 = new CreditCard(resultSet2.getString("(creditcard).password"), account2.getAccId());
                 java.util.Date date1 = new Date(resultSet.getDate("date").getTime());
                 Transfer transfer = new Transfer(creditCard1.getCardId(), creditCard2.getCardId(), resultSet.getInt("amount"), date1);
                 return transfer;
@@ -111,12 +109,12 @@ try {
     }
 
     @Override
-    public Integer update(Transfer transfer)  {
-        return null;
+    public void update(Transfer transfer)  {
+
     }
 
     @Override
-    public Integer delete(String id) {
-        return null;
+    public void delete(Transfer transfer) {
+
     }
 }

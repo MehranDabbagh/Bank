@@ -68,7 +68,7 @@ public class CreditCardServices {
         }
         }
     public void delete(Account account)  {
-        cardRepositories.delete(account.getAccId());
+        cardRepositories.delete(cardRepositories.readById(account.getAccId()));
         loggedIn=null;
     }
     public void transfer(String SenderCardId,String receiverCardId,String cvv2,String password,Date expireDate,Integer amount){
@@ -142,7 +142,7 @@ public class CreditCardServices {
       }
     }
     public void transaction(Integer operator,Integer amount,Account account)  {
-        Account loggedInAcc = accRepositories.readById(account.getAccId());
+        Account loggedInAcc = accRepositories.readById(account.getID());
         try {
             switch (operator) {
                 case 0: {
