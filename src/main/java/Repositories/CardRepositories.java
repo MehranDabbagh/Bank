@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class CardRepositories implements CRUD <CreditCard> {
+public class CardRepositories implements CRUD <CreditCard,String> {
     Connection connection=PostgresConnection.getInstance().getConnection();
 
 

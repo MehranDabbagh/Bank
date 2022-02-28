@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class TransferRepositories implements CRUD<Transfer> {
+public class TransferRepositories implements CRUD<Transfer,String> {
     Connection connection=PostgresConnection.getInstance().getConnection();
     @Override
     public String create(Transfer transfer) {

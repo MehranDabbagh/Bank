@@ -9,7 +9,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
-public class TransactionRepositories implements CRUD<Transaction> {
+public class TransactionRepositories implements CRUD<Transaction,String> {
     Connection connection=PostgresConnection.getInstance().getConnection();
     @Override
     public String create(Transaction transaction) {

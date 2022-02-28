@@ -6,55 +6,22 @@ import Entities.Account;
 import Entities.Status;
 import Entities.User;
 import MyConnection.PostgresConnection;
+import org.hibernate.SessionFactory;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AccRepositories implements CRUD <Account> {
-    Connection connection=PostgresConnection.getInstance().getConnection();
+public class AccRepositories implements CRUD <Account,Long> {
 
 
     @Override
-    public String create(Account account) {
-        String sqlTest ="select * from accs where accId=? ";
-        String sql="insert into accs (accId,Status,password,amount,branchName,userNational_Code) values (?,?,?,?,?,?)";
+    public Long create(Account account) {
 
-        try {
-            PreparedStatement preparedStatement=connection.prepareStatement(sqlTest);
-            preparedStatement.setString(1,account.getAccId());
-            ResultSet resultSet=preparedStatement.executeQuery();
-            while(resultSet.next()){
-                account=new Account(account.getPassword(), account.getUserNationalCode(),account.getBranchName());
-                 preparedStatement=connection.prepareStatement(sqlTest);
-                preparedStatement.setString(1,account.getAccId());
-                 resultSet=preparedStatement.executeQuery();
-            }
-            String sqlBranchTest="select from bank where branchName=?";
-             preparedStatement=connection.prepareStatement(sqlBranchTest);
-            preparedStatement.setString(1,account.getBranchName());
-            ResultSet resultSet1=preparedStatement.executeQuery();
-            if(resultSet1.next()) {
-                preparedStatement = connection.prepareStatement(sql);
-                preparedStatement.setString(1, account.getAccId());
-                preparedStatement.setInt(2, 0);
-                preparedStatement.setString(3, account.getPassword());
-                preparedStatement.setInt(4, account.getAmount());
-                preparedStatement.setString(5, account.getBranchName());
-                preparedStatement.setString(6, account.getUserNationalCode());
-                preparedStatement.execute();
-                return account.getAccId();
-            }else System.out.println("there is no branch with this name!");
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }catch (NullPointerException e){
-            e.printStackTrace();
-        }
-       return "undefined!";
     }
 
     @Override
-    public Account readById(String id) {
+    public Account readById(Long id) {
         String sql="select * from accs inner join users on accs.userNational_Code=users.national_code  where accId=? ";
         try {
             PreparedStatement preparedStatement= connection.prepareStatement(sql);
@@ -128,7 +95,7 @@ preparedStatement.execute();
     }
 
     @Override
-    public Integer delete(String id) {
+    public Integer delete(Long id) {
 String sql ="delete from accs where accId=?";
         try {
             PreparedStatement preparedStatement=connection.prepareStatement(sql);

@@ -5,11 +5,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-public interface CRUD<T> {
-    String create(T t) ;
-    T readById(String id) ;
+public interface CRUD<T,I> {
+    I create(T t) ;
+    T readById(I id) ;
     List<T> readAll() ;
     Integer update(T t) ;
-    Integer delete(String id) ;
+    Integer delete(I id) ;
 
 }
