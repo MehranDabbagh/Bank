@@ -10,18 +10,18 @@ import org.hibernate.SharedSessionContract;
 
 import java.util.List;
 
-public class AccRepositories implements CRUD <Account,Long> {
+public class AccRepositories implements CRUD <Account,String> {
     private SessionFactory sessionFactory = SessionFactorySingleton.getInstance();
 
 
     @Override
-    public Long create(Account account) {
+    public String create(Account account) {
         try (var session = sessionFactory.openSession()) {
             var transaction = session.beginTransaction();
             try {
                 session.save(account);
                 transaction.commit();
-                return account.getID();
+                return account.getAccId();
             } catch (Exception e) {
                 transaction.rollback();
                 throw e;
@@ -30,9 +30,9 @@ public class AccRepositories implements CRUD <Account,Long> {
     }
 
     @Override
-    public Account readById(Long id) {
+    public Account readById(String accId) {
         try (var session = sessionFactory.openSession()) {
-            return session.find(Account.class, id);
+            return session.find(Account.class, accId);
         }
     }
 

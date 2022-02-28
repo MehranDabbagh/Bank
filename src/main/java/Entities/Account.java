@@ -1,10 +1,8 @@
 package Entities;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -19,8 +17,6 @@ import javax.persistence.Id;
 
 public class Account {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long ID;
     private String accId;
     private Status status;
     private String password;
