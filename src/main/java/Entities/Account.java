@@ -25,5 +25,16 @@ public class Account {
     private Integer foul;
     private String userNationalCode;
 
-
+    @Override
+    public String toString() {
+        return "Account{" +
+                "accId='" + accId + '\'' +
+                ", status=" + status +
+                ", password='" + password + '\'' +
+                ", amount=" + amount +
+                ", branchName='" + branchName + '\'' +
+                ", foul=" + foul +
+                ", userNationalCode='" + userNationalCode + '\'' +
+                '}';
+    }
 }

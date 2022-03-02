@@ -21,7 +21,7 @@ public class Main<accServices> {
     static UserServices userServices =new UserServices();
     static AdminService adminService= new AdminService();
     static CreditCardServices creditCardServices= new CreditCardServices();
-    public static void main(String[] args) throws SQLException, ParseException, ClassNotFoundException {
+    public static void main(String[] args) throws  ParseException {
         boolean condition=true;
         while(condition){
             System.out.println("0-admin menu"+"\n"+"1-users menu"+ "\n" +"2-exit");
@@ -112,7 +112,7 @@ if(operator>3 || operator<0){
            }
           }
     }
-    public static void usersMenu() throws SQLException, ParseException, ClassNotFoundException {
+    public static void usersMenu() throws  ParseException {
           boolean condition=true;
           while(condition){
               try {
@@ -142,7 +142,7 @@ if(operator>3 || operator<0){
               }
           }
     }
-    public static void registerUserMenu() throws SQLException, ClassNotFoundException {
+    public static void registerUserMenu() {
         UserServices userServices=new UserServices();
         try {
             System.out.println("enter your national code");
@@ -167,7 +167,7 @@ if(operator>3 || operator<0){
         }
 
     }
-    public static void userLoginMenu() throws SQLException, ParseException {
+    public static void userLoginMenu() throws  ParseException {
         try {
             System.out.println("enter your national code");
             String nationalCode = input.next();
@@ -224,7 +224,7 @@ if(operator>3 || operator<0){
             System.out.println("please enter a number!");
         }
     }
-    public static void accLoginMenu() throws SQLException, ParseException {
+    public static void accLoginMenu() throws  ParseException {
         try {
             System.out.println("please enter your acc Id");
             String accId=input.next();
@@ -316,7 +316,7 @@ if(operator>3 || operator<0){
         }
 
     }
-    public static void transactionMenu(Account account) throws SQLException, ParseException {
+    public static void transactionMenu(Account account) throws ParseException {
         boolean condition=true;
         while(condition) {
             try {

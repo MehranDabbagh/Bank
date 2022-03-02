@@ -26,8 +26,10 @@ public class AccRepositories implements CRUD <Account,String> {
             try {
                 session.save(account);
                 transaction.commit();
+                System.out.println(account);
                 return account.getAccId();
             } catch (Exception e) {
+                e.printStackTrace();
                 transaction.rollback();
                 throw e;
             }
